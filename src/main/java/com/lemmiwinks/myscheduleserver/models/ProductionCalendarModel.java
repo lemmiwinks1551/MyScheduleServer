@@ -1,4 +1,4 @@
-package com.lemmiwinks.myscheduleserver;
+package com.lemmiwinks.myscheduleserver.models;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -6,23 +6,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Date;
 
-@Entity
-public class ProductionCalendar {
+@Entity // модель, которая отвечает за таблицу production_calendar
+public class ProductionCalendarModel {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id // аннотация уникального идентификатора
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // генерирует новое значение при добавлении записи
     private int id;
-
     private Date date;
-
     private int typeId;
-
     private String typeText;
-
     private String note;
-
     private String weekDay;
-
     private int workingHours;
 
     // Getters and Setters
@@ -81,5 +75,18 @@ public class ProductionCalendar {
 
     public void setWorkingHours(int workingHours) {
         this.workingHours = workingHours;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductionCalendarModel{" +
+                "id=" + id +
+                ", date=" + date +
+                ", typeId=" + typeId +
+                ", typeText='" + typeText + '\'' +
+                ", note='" + note + '\'' +
+                ", weekDay='" + weekDay + '\'' +
+                ", workingHours=" + workingHours +
+                '}';
     }
 }
