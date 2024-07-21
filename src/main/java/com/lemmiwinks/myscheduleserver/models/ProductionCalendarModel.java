@@ -17,7 +17,6 @@ public class ProductionCalendarModel {
     private String typeText;
     private String note;
     private String weekDay;
-    private int workingHours;
 
     // Getters and Setters
 
@@ -69,14 +68,6 @@ public class ProductionCalendarModel {
         this.weekDay = weekDay;
     }
 
-    public int getWorkingHours() {
-        return workingHours;
-    }
-
-    public void setWorkingHours(int workingHours) {
-        this.workingHours = workingHours;
-    }
-
     @Override
     public String toString() {
         return "ProductionCalendarModel{" +
@@ -86,7 +77,6 @@ public class ProductionCalendarModel {
                 ", typeText='" + typeText + '\'' +
                 ", note='" + note + '\'' +
                 ", weekDay='" + weekDay + '\'' +
-                ", workingHours=" + workingHours +
                 '}';
     }
 }
