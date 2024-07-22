@@ -22,7 +22,7 @@
         </thead>
         <tbody>
         <tr th:each="el : ${productionCalendarRepositoryAll}">
-            <td th:text="${#dates.format(el.date, 'dd.MM.yyyy')}"></td>
+            <td th:text="${el.date}"></td>
             <td th:text="${el.typeId}"></td>
             <td th:text="${el.typeText}"></td>
             <td th:text="${el.note}"></td>
