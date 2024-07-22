@@ -17,6 +17,18 @@ public class ProductionCalendarModel {
     private String note;
     private String weekDay;
 
+    public ProductionCalendarModel() {
+    }
+
+    public ProductionCalendarModel(int id, String date, int typeId, String typeText, String note, String weekDay) {
+        this.id = id;
+        this.date = date;
+        this.typeId = typeId;
+        this.typeText = typeText;
+        this.note = note;
+        this.weekDay = weekDay;
+    }
+
     public int getId() {
         return id;
     }
