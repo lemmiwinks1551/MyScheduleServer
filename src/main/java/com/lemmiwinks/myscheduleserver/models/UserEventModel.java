@@ -16,6 +16,7 @@ public class UserEventModel {
     private String device;
     private String dateTime;
     private String appVersionName;
+    private String eventType;
     private String event;
 
     public void setId(int id) {
@@ -40,6 +41,10 @@ public class UserEventModel {
 
     public void setAppVersionName(String appVersionName) {
         this.appVersionName = appVersionName;
+    }
+
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
     }
 
     public void setEvent(String event) {
