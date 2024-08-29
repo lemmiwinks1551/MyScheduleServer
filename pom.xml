@@ -12,7 +12,7 @@
 
     <groupId>com.lemmiwinks</groupId>
     <artifactId>myscheduleserver</artifactId>
-    <version>v.5</version>
+    <version>v.6</version>
     <name>MyScheduleServer</name>
     <description>Spring Boot</description>
     <url/>
