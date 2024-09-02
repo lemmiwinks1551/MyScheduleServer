@@ -33,7 +33,7 @@ public class FaqController {
     public ResponseEntity<List<FaqModel>> faq(
             @RequestHeader(value = HttpHeaders.IF_NONE_MATCH, required = false) String ifNoneMatch) {
 
-        logger.info("Вызван метод faqModels");
+        logger.info("Вызван метод faq");
 
         // Получение текущего ETag из базы данных для таблицы 'faq_model'
         DbVersionsEtag dbVersion = dbVersionsEtagRepository.findByTableName("faq_model");
@@ -53,13 +53,6 @@ public class FaqController {
 
         // Если ETag не совпадает или заголовок отсутствует, получаем актуальные данные
         List<FaqModel> faqModels = faqRepository.findAll();
-
-        logger.info(faqRepository.toString());
-
-        // Логирование содержимого данных
-        for (FaqModel item : faqModels) {
-            logger.info(item.toString());
-        }
 
         // Создание заголовков ответа и установка ETag
         HttpHeaders headers = new HttpHeaders();
