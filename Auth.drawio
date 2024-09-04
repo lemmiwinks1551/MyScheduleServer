@@ -1,9 +1,54 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36" version="24.7.6">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36" version="24.7.10">
   <diagram name="Страница — 1" id="QKNt265_Iv7t7Sv83_EB">
-    <mxGraphModel>
+    <mxGraphModel dx="1247" dy="678" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="BMl1e_dXPQe9FOXhRGfQ-3" value="Регистрация" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="221.5" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="BMl1e_dXPQe9FOXhRGfQ-4" value="" style="endArrow=none;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.972;entryY=0.444;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="BMl1e_dXPQe9FOXhRGfQ-3" target="BMl1e_dXPQe9FOXhRGfQ-21">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="50" y="461.5" as="sourcePoint" />
+            <mxPoint x="130" y="348.16666666666674" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BMl1e_dXPQe9FOXhRGfQ-6" value="Логин" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="317.25" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="BMl1e_dXPQe9FOXhRGfQ-7" value="" style="endArrow=none;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.985;entryY=0.453;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="BMl1e_dXPQe9FOXhRGfQ-6" target="BMl1e_dXPQe9FOXhRGfQ-21">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="260" y="281.5" as="sourcePoint" />
+            <mxPoint x="130" y="348.16666666666674" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BMl1e_dXPQe9FOXhRGfQ-14" value="Hash function" style="shape=image;html=1;verticalLabelPosition=bottom;verticalAlign=top;imageAspect=1;aspect=fixed;image=img/clipart/Gear_128x128.png" vertex="1" parent="1">
+          <mxGeometry x="730" y="90" width="52" height="61" as="geometry" />
+        </mxCell>
+        <mxCell id="BMl1e_dXPQe9FOXhRGfQ-15" value="Database" style="image;aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;spacingTop=3;image=img/lib/active_directory/database_server.svg;" vertex="1" parent="1">
+          <mxGeometry x="834.49" y="40" width="91.02" height="111" as="geometry" />
+        </mxCell>
+        <mxCell id="BMl1e_dXPQe9FOXhRGfQ-16" value="Cloud" style="image;aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;spacingTop=3;image=img/lib/active_directory/internet_cloud.svg;" vertex="1" parent="1">
+          <mxGeometry x="855" y="190" width="50" height="31.5" as="geometry" />
+        </mxCell>
+        <mxCell id="BMl1e_dXPQe9FOXhRGfQ-17" value="Main server" style="image;aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;spacingTop=3;image=img/lib/active_directory/generic_server.svg;" vertex="1" parent="1">
+          <mxGeometry x="510" y="266.5" width="117.6" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="BMl1e_dXPQe9FOXhRGfQ-18" value="Забыл пароль" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="421.5" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="BMl1e_dXPQe9FOXhRGfQ-19" value="" style="endArrow=none;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.979;entryY=0.471;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="BMl1e_dXPQe9FOXhRGfQ-18" target="BMl1e_dXPQe9FOXhRGfQ-21">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="170" y="461.5" as="sourcePoint" />
+            <mxPoint x="130" y="348.16666666666674" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BMl1e_dXPQe9FOXhRGfQ-20" value="" style="image;aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;spacingTop=3;image=img/lib/active_directory/key.svg;" vertex="1" parent="1">
+          <mxGeometry x="650" y="114" width="50" height="37" as="geometry" />
+        </mxCell>
+        <mxCell id="BMl1e_dXPQe9FOXhRGfQ-21" value="User" style="image;aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;spacingTop=3;image=img/lib/active_directory/user.svg;" vertex="1" parent="1">
+          <mxGeometry x="50" y="266.5" width="66.6" height="180" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
