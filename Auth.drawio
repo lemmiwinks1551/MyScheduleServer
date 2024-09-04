@@ -26,7 +26,7 @@
           <mxGeometry x="1295" y="70" width="91.02" height="111" as="geometry" />
         </mxCell>
         <mxCell id="BMl1e_dXPQe9FOXhRGfQ-16" value="Cloud" style="image;aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;spacingTop=3;image=img/lib/active_directory/internet_cloud.svg;" vertex="1" parent="1">
-          <mxGeometry x="1470" y="410" width="55" height="34.65" as="geometry" />
+          <mxGeometry x="1386.02" y="350" width="174.6" height="110" as="geometry" />
         </mxCell>
         <mxCell id="BMl1e_dXPQe9FOXhRGfQ-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="BMl1e_dXPQe9FOXhRGfQ-21" target="BMl1e_dXPQe9FOXhRGfQ-3">
           <mxGeometry relative="1" as="geometry" />
