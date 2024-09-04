@@ -4,9 +4,6 @@
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="BMl1e_dXPQe9FOXhRGfQ-38" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="BMl1e_dXPQe9FOXhRGfQ-3" target="BMl1e_dXPQe9FOXhRGfQ-35">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
         <mxCell id="BMl1e_dXPQe9FOXhRGfQ-3" value="Регистрация" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="190" y="290" width="120" height="60" as="geometry" />
         </mxCell>
@@ -29,10 +26,7 @@
           <mxGeometry x="1295" y="70" width="91.02" height="111" as="geometry" />
         </mxCell>
         <mxCell id="BMl1e_dXPQe9FOXhRGfQ-16" value="Cloud" style="image;aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;spacingTop=3;image=img/lib/active_directory/internet_cloud.svg;" vertex="1" parent="1">
-          <mxGeometry x="1500" y="426.85" width="55" height="34.65" as="geometry" />
-        </mxCell>
-        <mxCell id="BMl1e_dXPQe9FOXhRGfQ-20" value="Secret key" style="image;aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;spacingTop=3;image=img/lib/active_directory/key.svg;" vertex="1" parent="1">
-          <mxGeometry x="1500" y="170.00000000000003" width="50" height="37" as="geometry" />
+          <mxGeometry x="1470" y="410" width="55" height="34.65" as="geometry" />
         </mxCell>
         <mxCell id="BMl1e_dXPQe9FOXhRGfQ-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="BMl1e_dXPQe9FOXhRGfQ-21" target="BMl1e_dXPQe9FOXhRGfQ-3">
           <mxGeometry relative="1" as="geometry" />
@@ -53,7 +47,7 @@
           <mxGeometry x="60" y="144.25" width="70" height="60" as="geometry" />
         </mxCell>
         <mxCell id="BMl1e_dXPQe9FOXhRGfQ-28" value="" style="dashed=0;outlineConnect=0;html=1;align=center;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;shape=mxgraph.weblogos.android;fillColor=#A4CA39;strokeColor=none" vertex="1" parent="1">
-          <mxGeometry x="50" y="770" width="67.60000000000001" height="80" as="geometry" />
+          <mxGeometry x="290" y="810" width="67.60000000000001" height="80" as="geometry" />
         </mxCell>
         <mxCell id="BMl1e_dXPQe9FOXhRGfQ-29" value="" style="dashed=0;outlineConnect=0;html=1;align=center;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;shape=mxgraph.weblogos.json_2" vertex="1" parent="1">
           <mxGeometry x="460" y="10" width="80.4" height="25.200000000000003" as="geometry" />
@@ -120,6 +114,15 @@
         </mxCell>
         <mxCell id="BMl1e_dXPQe9FOXhRGfQ-68" value="Пароль/Логин неверный" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="1220" y="680" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="BMl1e_dXPQe9FOXhRGfQ-77" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="BMl1e_dXPQe9FOXhRGfQ-75" target="BMl1e_dXPQe9FOXhRGfQ-35">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BMl1e_dXPQe9FOXhRGfQ-75" value="fG2yQ23" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.text.captcha;fontColor=#666666;fontSize=25;strokeColor=#666666;mainText=" vertex="1" parent="1">
+          <mxGeometry x="300" y="190" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="BMl1e_dXPQe9FOXhRGfQ-76" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.004;entryY=0.538;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="BMl1e_dXPQe9FOXhRGfQ-3" target="BMl1e_dXPQe9FOXhRGfQ-75">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
