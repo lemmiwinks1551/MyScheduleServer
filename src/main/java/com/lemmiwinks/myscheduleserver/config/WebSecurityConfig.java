@@ -24,29 +24,46 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf()
-                .disable()
+                // Отключение защиты от CSRF атак
+                .csrf().disable()
+
+                // Настройка авторизации запросов
                 .authorizeRequests()
-                //Доступ только для не зарегистрированных пользователей
+
+                // Доступ только для не зарегистрированных пользователей
                 .antMatchers("/registration").not().fullyAuthenticated()
-                //Доступ только для пользователей с ролью Администратор
+
+                // Доступ только для пользователей с ролью Администратор
                 .antMatchers("/admin/**").hasRole("ADMIN")
+
+                /* Доступ только для пользователей с ролью USER
                 .antMatchers("/news").hasRole("USER")
-                //Доступ разрешен всем пользователей
-                .antMatchers("/", "/resources/**").permitAll()
-                //Все остальные страницы требуют аутентификации
-                .anyRequest().authenticated()
+                .antMatchers("/news").hasRole("ADMIN")*/
+
+                // Доступ разрешён всем пользователям
+                .antMatchers("/faq").permitAll()
+                .antMatchers("/news").permitAll()
+
+                // Доступ разрешён для всех ресурсов, если они есть
+                .antMatchers("/resources/**").permitAll()
+
+                // Все остальные страницы требуют аутентификации
+                .anyRequest()
+                .authenticated()
+
                 .and()
-                //Настройка для входа в систему
+                // Настройка формы входа
                 .formLogin()
-                .loginPage("/login")
-                //Перенарпавление на главную страницу после успешного входа
-                .defaultSuccessUrl("/")
-                .permitAll()
+                .loginPage("/login") // Страница входа
+                .defaultSuccessUrl("/") // Перенаправление на главную страницу после успешного входа
+                .permitAll() // Разрешение доступа к странице входа
+
                 .and()
+                // Настройка выхода из системы
                 .logout()
-                .permitAll()
-                .logoutSuccessUrl("/");
+                .permitAll() // Разрешение доступа к выходу из системы
+                .logoutSuccessUrl("/") // Перенаправление на главную страницу после выхода
+        ;
     }
 
     @Autowired
