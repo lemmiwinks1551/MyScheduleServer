@@ -1,4 +1,4 @@
-package com.lemmiwinks.myscheduleserver.models;
+package com.lemmiwinks.myscheduleserver.entity;
 
 
 import javax.persistence.Entity;

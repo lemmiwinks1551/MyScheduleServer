@@ -1,9 +1,9 @@
-package com.lemmiwinks.myscheduleserver.controllers;
+package com.lemmiwinks.myscheduleserver.controller;
 
-import com.lemmiwinks.myscheduleserver.models.DbVersionsEtag;
-import com.lemmiwinks.myscheduleserver.models.ProductionCalendarModel;
-import com.lemmiwinks.myscheduleserver.repositiry.DbVersionsEtagRepository;
-import com.lemmiwinks.myscheduleserver.repositiry.ProductionCalendarRepository;
+import com.lemmiwinks.myscheduleserver.entity.DbVersionsEtag;
+import com.lemmiwinks.myscheduleserver.entity.ProductionCalendarModel;
+import com.lemmiwinks.myscheduleserver.repository.DbVersionsEtagRepository;
+import com.lemmiwinks.myscheduleserver.repository.ProductionCalendarRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

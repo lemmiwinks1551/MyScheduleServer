@@ -1,7 +1,7 @@
-package com.lemmiwinks.myscheduleserver.controllers;
+package com.lemmiwinks.myscheduleserver.controller;
 
-import com.lemmiwinks.myscheduleserver.models.UserEventModel;
-import com.lemmiwinks.myscheduleserver.repositiry.UserEventRepository;
+import com.lemmiwinks.myscheduleserver.entity.UserEventModel;
+import com.lemmiwinks.myscheduleserver.repository.UserEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
