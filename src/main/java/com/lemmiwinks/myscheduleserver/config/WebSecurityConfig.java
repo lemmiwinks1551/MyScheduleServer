@@ -43,7 +43,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // Доступ разрешён всем пользователям:
                 .antMatchers("/faq").permitAll() // faq API
                 .antMatchers("/faq/view").permitAll() // faq web
-                .antMatchers("/news").permitAll()
 
                 // Доступ разрешён для всех ресурсов, если они есть
                 .antMatchers("/resources/**").permitAll()

@@ -5,6 +5,8 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+  <link rel="shortcut icon" type="image/x-icon" href="/resources/static/favicon.ico" />
+
   <!-- Устанавливаем заголовок страницы -->
   <title>Главная</title>
 
@@ -33,9 +35,6 @@
     <h3>Добро пожаловать, ${pageContext.request.userPrincipal.name}!</h3>
     <h4><a href="/logout">Выйти</a></h4>
   </sec:authorize>
-
-  <!-- Ссылка на раздел новостей, доступен всем пользователям -->
-  <h4><a href="/news">Новости</a></h4>
 
   <!-- Ссылка на раздел FAQ, доступен всем пользователям -->
   <h4><a href="/faq/view">FAQ</a></h4>
