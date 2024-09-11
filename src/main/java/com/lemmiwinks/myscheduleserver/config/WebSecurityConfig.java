@@ -40,8 +40,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/news").hasRole("USER")
                 .antMatchers("/news").hasRole("ADMIN")*/
 
-                // Доступ разрешён всем пользователям
-                .antMatchers("/faq").permitAll()
+                // Доступ разрешён всем пользователям:
+                .antMatchers("/faq").permitAll() // faq API
+                .antMatchers("/faq/view").permitAll() // faq web
                 .antMatchers("/news").permitAll()
 
                 // Доступ разрешён для всех ресурсов, если они есть

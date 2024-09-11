@@ -5,23 +5,40 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+  <!-- Устанавливаем заголовок страницы -->
   <title>Главная</title>
+
+  <!-- Добавляем изображение -->
+  <img src="/resources/static/ic_launcher.png" />
+
+  <!-- Указываем кодировку и тип содержимого страницы -->
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+  <!-- Подключаем CSS-стили из ресурсов -->
   <link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/style.css">
 </head>
+
 <body>
 <div>
-  <h3>${pageContext.request.userPrincipal.name}</h3>
+
+  <!-- Если пользователь не аутентифицирован, показываем ссылки для входа и регистрации -->
   <sec:authorize access="!isAuthenticated()">
+  <h3>Добро пожаловать!</h3>
     <h4><a href="/login">Войти</a></h4>
     <h4><a href="/registration">Зарегистрироваться</a></h4>
   </sec:authorize>
+
+  <!-- Если пользователь аутентифицирован, показываем ссылку на выход -->
   <sec:authorize access="isAuthenticated()">
+    <h3>Добро пожаловать, ${pageContext.request.userPrincipal.name}!</h3>
     <h4><a href="/logout">Выйти</a></h4>
   </sec:authorize>
+
+  <!-- Ссылка на раздел новостей, доступен всем пользователям -->
   <h4><a href="/news">Новости</a></h4>
-  <h4><a href="/admin">Пользователи (только админ)</a></h4>
-  <h4><a href="/faq">FAQ</a></h4>
+
+  <!-- Ссылка на раздел FAQ, доступен всем пользователям -->
+  <h4><a href="/faq/view">FAQ</a></h4>
 </div>
 </body>
 </html>
