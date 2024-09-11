@@ -3,13 +3,14 @@
 
 <html>
 <head>
+    <link rel="shortcut icon" type="image/x-icon" href="/resources/static/favicon.ico" />
     <title>Часто задаваемые вопросы</title>
 </head>
 <body>
     <h2>Часто задаваемые вопросы</h2>
     <table border="1">
         <tr>
-            <th>ID</th>
+            <th>№</th>
             <th>Вопрос</th>
             <th>Ответ</th>
         </tr>

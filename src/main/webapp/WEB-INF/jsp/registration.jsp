@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <link rel="shortcut icon" type="image/x-icon" href="/resources/static/favicon.ico" />
   <meta charset="utf-8">
   <title>Регистрация</title>
 </head>
@@ -14,17 +15,17 @@
   <form:form method="POST" modelAttribute="userForm">
     <h2>Регистрация</h2>
     <div>
-      <form:input type="text" path="username" placeholder="Username"
+      <form:input type="text" path="username" placeholder="Имя пользователя"
                   autofocus="true"></form:input>
       <form:errors path="username"></form:errors>
         ${usernameError}
     </div>
     <div>
-      <form:input type="password" path="password" placeholder="Password"></form:input>
+      <form:input type="password" path="password" placeholder="Пароль"></form:input>
     </div>
     <div>
       <form:input type="password" path="passwordConfirm"
-                  placeholder="Confirm your password"></form:input>
+                  placeholder="Введите пароль еще раз"></form:input>
       <form:errors path="password"></form:errors>
         ${passwordError}
     </div>

@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <link rel="shortcut icon" type="image/x-icon" href="/resources/static/favicon.ico" />
   <meta charset="utf-8">
   <title>Log in with your account</title>
 </head>
@@ -16,10 +17,10 @@
   <form method="POST" action="/login">
     <h2>Вход в систему</h2>
     <div>
-      <input name="username" type="text" placeholder="Username"
+      <input name="username" type="text" placeholder="Имя пользователя"
              autofocus="true"/>
-      <input name="password" type="password" placeholder="Password"/>
-      <button type="submit">Log In</button>
+      <input name="password" type="password" placeholder="Пароль"/>
+      <button type="submit">Войти</button>
       <h4><a href="/registration">Зарегистрироваться</a></h4>
     </div>
   </form>
