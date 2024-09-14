@@ -31,12 +31,6 @@ public class RegistrationController {
     @PostMapping("/registration")
     public String addUser(@ModelAttribute("userForm") @Valid User userForm, BindingResult bindingResult, Model model) {
 
-        if (bindingResult.hasErrors()) {
-            return "registration";
-        } else {
-            registerUser(userForm);
-        }
-
         if (!userForm.getPassword().equals(userForm.getPasswordConfirm())){
             model.addAttribute("passwordError", "Пароли не совпадают");
             return "registration";
@@ -49,6 +43,12 @@ public class RegistrationController {
         if (userRepository.existsByUserEmail(userForm.getUserEmail())){
             model.addAttribute("userEmailError", "Пользователь с таким Email уже существует");
             return "registration";
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "registration";
+        } else {
+            registerUser(userForm);
         }
 
         return "redirect:/";

@@ -7,12 +7,18 @@ import com.lemmiwinks.myscheduleserver.repository.UserRepository;
 import com.lemmiwinks.myscheduleserver.service.EmailService;
 import com.lemmiwinks.myscheduleserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -30,6 +36,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     EmailService emailService;
 
+    @Autowired
+    private JavaMailSender javaMailSender;
+
     @Override
     public void saveUser(User user) {
         userRepository.save(user);
@@ -38,25 +47,26 @@ public class UserServiceImpl implements UserService {
 
         confirmationTokenRepository.save(confirmationToken);
 
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(user.getUserEmail());
-        mailMessage.setFrom("scheduleapp@mail.ru");
-        mailMessage.setSubject("Complete Registration!");
-        mailMessage.setText("To confirm your account, please click here : "
-                +"http://localhost:8080/confirm-account?token="+confirmationToken.getConfirmationToken());
-        emailService.sendEmail(mailMessage);
+        String verificationLink = "http://localhost:8080/confirm-account?token=" + confirmationToken.getConfirmationToken();
 
-        System.out.println("Confirmation Token: " + confirmationToken.getConfirmationToken());
+        String htmlSubject = "Запись клиентов - завершение регистрации";
+        String htmlContent = "Чтобы завершить регистрацию, <a href='" + verificationLink + "'>перейдите по ссылке</a>.";
 
-        ResponseEntity.ok("Verify email by the link sent on your email address");
+        try {
+            emailService.sendEmailWithHtml(user.getUserEmail(),
+                    htmlSubject, htmlContent);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+
+        ResponseEntity.ok("Ссылка для верификации аккаунта отправлена на почтовый ящику, указанный при регистрации");
     }
 
     @Override
     public ResponseEntity<?> confirmEmail(String confirmationToken) {
         ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
 
-        if(token != null)
-        {
+        if (token != null) {
             User user = userRepository.findByUserEmailIgnoreCase(token.getUserEntity().getUserEmail());
             user.setEnabled(true);
             userRepository.save(user);
@@ -69,4 +79,5 @@ public class UserServiceImpl implements UserService {
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         return null;
     }
+
 }
