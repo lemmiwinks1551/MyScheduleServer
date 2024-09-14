@@ -1,4 +1,4 @@
-package com.lemmiwinks.myscheduleserver.controller;
+package com.lemmiwinks.myscheduleserver.controller.api;
 
 import com.lemmiwinks.myscheduleserver.entity.UserEventModel;
 import com.lemmiwinks.myscheduleserver.repository.UserEventRepository;

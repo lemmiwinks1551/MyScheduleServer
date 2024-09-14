@@ -70,14 +70,13 @@ public class UserServiceImpl implements UserService {
             User user = userRepository.findByUserEmailIgnoreCase(token.getUserEntity().getUserEmail());
             user.setEnabled(true);
             userRepository.save(user);
-            return ResponseEntity.ok("Email verified successfully!");
+            return ResponseEntity.ok("Аккаунт подтвержден!");
         }
-        return ResponseEntity.badRequest().body("Error: Couldn't verify email");
+        return ResponseEntity.badRequest().body("Не удалось подтвердить аккаунт");
     }
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         return null;
     }
-
 }

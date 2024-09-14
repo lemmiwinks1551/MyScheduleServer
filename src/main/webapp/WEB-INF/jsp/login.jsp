@@ -6,7 +6,7 @@
 <head>
   <link rel="shortcut icon" type="image/x-icon" href="/resources/static/favicon.ico" />
   <meta charset="utf-8">
-  <title>Log in with your account</title>
+  <title>Вход в аккаунт</title>
 </head>
 
 <body>

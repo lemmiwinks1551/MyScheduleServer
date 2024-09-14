@@ -51,7 +51,7 @@ public class RegistrationController {
             registerUser(userForm);
         }
 
-        return "redirect:/";
+        return "redirect:/login";
     }
 
     public void registerUser(@RequestBody User user) {
