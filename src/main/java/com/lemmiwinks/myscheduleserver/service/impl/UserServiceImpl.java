@@ -50,7 +50,9 @@ public class UserServiceImpl implements UserService {
         String verificationLink = "http://localhost:8080/confirm-account?token=" + confirmationToken.getConfirmationToken();
 
         String htmlSubject = "Запись клиентов - завершение регистрации";
-        String htmlContent = "Чтобы завершить регистрацию, <a href='" + verificationLink + "'>перейдите по ссылке</a>.";
+        String htmlContent = "Чтобы завершить регистрацию, " +
+                "<a href='" + verificationLink + "'>перейдите по ссылке</a>.<br> " +
+                "Ссылка действительна 24 часа. <br>";
 
         try {
             emailService.sendEmailWithHtml(user.getUserEmail(),

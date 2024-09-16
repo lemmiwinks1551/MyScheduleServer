@@ -3,7 +3,6 @@ package com.lemmiwinks.myscheduleserver.entity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.util.Collection;
 
 @Entity
@@ -14,12 +13,10 @@ public class User implements UserDetails { // Чтобы в дальнейшим
     @GeneratedValue(strategy = GenerationType.IDENTITY) // генерацией id будет заниматься БД
     private Long id;
 
-    @Size(min = 2, message = "Не меньше 2 знаков")
     private String username;
 
     private String userEmail;
 
-    @Size(min = 8, message = "Не меньше 8 знаков")
     private String password;
 
     @Transient // не имеет отображения в БД
@@ -55,7 +52,7 @@ public class User implements UserDetails { // Чтобы в дальнейшим
         return username;
     }
 
-    public void setUsername(@Size(min = 2, message = "Не меньше 2 знаков") String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -77,7 +74,7 @@ public class User implements UserDetails { // Чтобы в дальнейшим
         return password;
     }
 
-    public void setPassword(@Size(min = 8, message = "Не меньше 8 знаков") String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
