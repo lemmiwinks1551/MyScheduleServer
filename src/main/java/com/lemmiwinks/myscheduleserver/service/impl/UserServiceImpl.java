@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import javax.mail.MessagingException;
 import javax.persistence.EntityManager;
@@ -49,10 +50,10 @@ public class UserServiceImpl implements UserService {
 
         String verificationLink = "http://localhost:8080/confirm-account?token=" + confirmationToken.getConfirmationToken();
 
-        String htmlSubject = "Запись клиентов - завершение регистрации";
-        String htmlContent = "Чтобы завершить регистрацию, " +
-                "<a href='" + verificationLink + "'>перейдите по ссылке</a>.<br> " +
-                "Ссылка действительна 24 часа. <br>";
+        String htmlSubject = "Приложение Запись клиентов - завершение регистрации";
+        String htmlContent = "Добро пожаловать, <b>" + user.getUsername() + "</b>!" + "<br>Чтобы завершить регистрацию, " +
+                "<a href='" + verificationLink + "'>перейдите по ссылке</a>." +
+                "<br>Ссылка действительна 24 часа.<br>";
 
         try {
             emailService.sendEmailWithHtml(user.getUserEmail(),
@@ -60,21 +61,19 @@ public class UserServiceImpl implements UserService {
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
-
-        ResponseEntity.ok("Ссылка для верификации аккаунта отправлена на почтовый ящику, указанный при регистрации");
     }
 
     @Override
-    public ResponseEntity<?> confirmEmail(String confirmationToken) {
+    public Boolean confirmEmail(String confirmationToken) {
         ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
 
         if (token != null) {
             User user = userRepository.findUserByUserEmail(token.getUserEntity().getUserEmail());
             user.setEnabled(true);
             userRepository.save(user);
-            return ResponseEntity.ok("Аккаунт подтвержден!");
         }
-        return ResponseEntity.badRequest().body("Не удалось подтвердить аккаунт");
+
+        return token != null;
     }
 
     @Override

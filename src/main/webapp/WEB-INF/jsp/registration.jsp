@@ -27,7 +27,7 @@
 <body>
 <div>
   <form:form method="POST" modelAttribute="userForm">
-    <h2>Регистрация</h2>
+    <h2>Регистрация нового пользователя</h2>
 
     <div>
       <form:input type="text" path="username" placeholder="Имя пользователя" autofocus="true"></form:input>
@@ -57,7 +57,7 @@
 
     <button type="submit">Зарегистрироваться</button>
   </form:form>
-  <a href="/">Главная</a>
+  <a href="/"><br>На Главную</a>
 </div>
 </body>
 </html>

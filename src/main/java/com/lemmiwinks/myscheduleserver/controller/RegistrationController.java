@@ -31,7 +31,7 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String addUser(@ModelAttribute("userForm") @Valid User userForm, BindingResult bindingResult, Model model) {
-        Boolean error = false;
+        boolean error = false;
 
         if (userRepository.existsByUsername(userForm.getUsername())) {
             model.addAttribute("usernameError", "Пользователь с таким логином уже существует");
@@ -54,13 +54,13 @@ public class RegistrationController {
             error = true;
         }
 
-        if (!userForm.getUserEmail().contains("@") || userForm.getUserEmail().isEmpty()) {
+        if (!userForm.getUserEmail().contains("@") || userForm.getUserEmail().isEmpty() || !userForm.getUserEmail().contains(".")) {
             model.addAttribute("userEmailError", "Указан некорректный Email");
             error = true;
         }
 
-        if (userForm.getPassword().length() < 8) {
-            model.addAttribute("passwordError", "Пароль должен содержать больше 8 символов");
+        if (userForm.getPassword().length() < 8 || userForm.getPassword().length() > 16) {
+            model.addAttribute("passwordError", "Пароль пользователя должен содержать от 8 до 16 символов");
             error = true;
         }
 
@@ -70,22 +70,35 @@ public class RegistrationController {
         }
 
         if (error) {
+            // Возвращаем на ту же страницу с формой, передаем ошибки
             return "registration";
-        } else {
-            registerUser(userForm);
-            model.addAttribute("message", "Ссылка для верификации аккаунта отправлена на почтовый ящику, указанный при регистрации");
         }
 
-        return "registration";
+        // Если ошибок нет, регистрируем пользователя
+        registerUser(userForm);
+
+        model.addAttribute("message", "Ссылка для верификации аккаунта отправлена на почтовый ящик, указанный при регистрации");
+        model.addAttribute("message-type", "success-message");
+        return "message";
     }
+
 
     public void registerUser(@RequestBody User user) {
         userService.saveUser(user);
     }
 
     @RequestMapping(value = "/confirm-account", method = {RequestMethod.GET, RequestMethod.POST})
-    public ResponseEntity<?> confirmUserAccount(@RequestParam("token") String confirmationToken) {
-        return userService.confirmEmail(confirmationToken);
+    public String confirmUserAccount(@RequestParam("token") String confirmationToken, Model model) {
+        model.addAttribute("title", "Верификация аккаунта");
+
+        if (userService.confirmEmail(confirmationToken)) {
+            model.addAttribute("message", "Поздравляем! Ваш аккаунт подтвержден");
+            model.addAttribute("message-type", "success-message");
+        } else {
+            model.addAttribute("message", "Не удалось подтвердить аккаунт");
+            model.addAttribute("message-type", "error-message");
+        }
+        return "message";
     }
 
 
