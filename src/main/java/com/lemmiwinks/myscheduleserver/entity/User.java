@@ -5,8 +5,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "users") // название таблицы, в которой будут храниться данные о пользователях
@@ -28,20 +26,20 @@ public class User implements UserDetails { // Чтобы в дальнейшим
     // Поле, показывающее, что пароль введен корректно
     private String passwordConfirm;
 
-    private boolean inEnabled;
+    private boolean isEnabled;
 
     // Конструктор по умолчанию
     public User() {
     }
 
     // Конструктор с параметрами
-    public User(Long id, String username, String userEmail, String password, String passwordConfirm, boolean inEnabled) {
+    public User(Long id, String username, String userEmail, String password, String passwordConfirm, boolean isEnabled) {
         this.id = id;
         this.username = username;
         this.userEmail = userEmail;
         this.password = password;
         this.passwordConfirm = passwordConfirm;
-        this.inEnabled = inEnabled;
+        this.isEnabled = isEnabled;
     }
 
     // Геттеры и сеттеры для полей
@@ -87,12 +85,8 @@ public class User implements UserDetails { // Чтобы в дальнейшим
 
     public void setPasswordConfirm(String passwordConfirm) {this.passwordConfirm = passwordConfirm;}
 
-    public boolean isInEnabled() {
-        return inEnabled;
-    }
-
     public void setEnabled(boolean inEnabled) {
-        this.inEnabled = inEnabled;
+        this.isEnabled = inEnabled;
     }
 
     // Реализация методов из UserDetails для интеграции с Spring Security

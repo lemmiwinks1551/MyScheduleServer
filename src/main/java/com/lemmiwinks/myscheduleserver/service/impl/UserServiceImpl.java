@@ -7,18 +7,14 @@ import com.lemmiwinks.myscheduleserver.repository.UserRepository;
 import com.lemmiwinks.myscheduleserver.service.EmailService;
 import com.lemmiwinks.myscheduleserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -41,6 +37,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveUser(User user) {
+        // Хеширование пароля перед сохранением пользователя
+        String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+
         userRepository.save(user);
 
         ConfirmationToken confirmationToken = new ConfirmationToken(user);
@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
         ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
 
         if (token != null) {
-            User user = userRepository.findByUserEmailIgnoreCase(token.getUserEntity().getUserEmail());
+            User user = userRepository.findUserByUserEmail(token.getUserEntity().getUserEmail());
             user.setEnabled(true);
             userRepository.save(user);
             return ResponseEntity.ok("Аккаунт подтвержден!");
@@ -76,7 +76,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return null;
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        //  Spring Security использует BCryptPasswordEncoder для проверки введённого пароля пользователя.
+        User user = userRepository.findUserByUsername(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        return user;
     }
 }
