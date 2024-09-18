@@ -36,8 +36,6 @@
     <h4><a href="/logout">Выйти</a></h4>
   </sec:authorize>
 
-  <!-- Ссылка на раздел FAQ, доступен всем пользователям -->
-  <h4><a href="/faq/view">FAQ</a></h4>
 </div>
 </body>
 </html>

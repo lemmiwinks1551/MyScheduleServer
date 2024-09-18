@@ -57,7 +57,8 @@
 
     <button type="submit">Зарегистрироваться</button>
   </form:form>
-  <a href="/"><br>На Главную</a>
+  <h4><a href="/">На главную</a></h4>
+
 </div>
 </body>
 </html>
