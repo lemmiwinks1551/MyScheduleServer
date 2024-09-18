@@ -33,6 +33,7 @@
   <!-- Если пользователь аутентифицирован, показываем ссылку на выход -->
   <sec:authorize access="isAuthenticated()">
     <h3>Добро пожаловать, ${pageContext.request.userPrincipal.name}!</h3>
+    <h4><a href="/account">Мой аккаунт</a></h4>
     <h4><a href="/logout">Выйти</a></h4>
   </sec:authorize>
 

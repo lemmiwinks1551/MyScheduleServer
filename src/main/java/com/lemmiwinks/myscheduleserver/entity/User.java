@@ -2,6 +2,7 @@ package com.lemmiwinks.myscheduleserver.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import java.util.Collection;
 
@@ -78,9 +79,13 @@ public class User implements UserDetails { // Чтобы в дальнейшим
         this.password = password;
     }
 
-    public String getPasswordConfirm() {return passwordConfirm;}
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
 
-    public void setPasswordConfirm(String passwordConfirm) {this.passwordConfirm = passwordConfirm;}
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
+    }
 
     public void setEnabled(boolean inEnabled) {
         this.isEnabled = inEnabled;
@@ -104,6 +109,6 @@ public class User implements UserDetails { // Чтобы в дальнейшим
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.isEnabled;
     }
 }

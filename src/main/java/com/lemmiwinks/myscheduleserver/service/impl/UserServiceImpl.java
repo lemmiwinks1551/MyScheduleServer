@@ -7,13 +7,11 @@ import com.lemmiwinks.myscheduleserver.repository.UserRepository;
 import com.lemmiwinks.myscheduleserver.service.EmailService;
 import com.lemmiwinks.myscheduleserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import javax.mail.MessagingException;
 import javax.persistence.EntityManager;
@@ -68,7 +66,7 @@ public class UserServiceImpl implements UserService {
         ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
 
         if (token != null) {
-            User user = userRepository.findUserByUserEmail(token.getUserEntity().getUserEmail());
+            User user = userRepository.findByUserEmail(token.getUserEntity().getUserEmail());
             user.setEnabled(true);
             userRepository.save(user);
         }
@@ -79,7 +77,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         //  Spring Security использует BCryptPasswordEncoder для проверки введённого пароля пользователя.
-        User user = userRepository.findUserByUsername(username);
+        User user = userRepository.findByUsername(username);
 
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
