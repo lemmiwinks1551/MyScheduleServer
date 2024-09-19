@@ -1,14 +1,22 @@
 package com.lemmiwinks.myscheduleserver.controller;
 
+import com.lemmiwinks.myscheduleserver.entity.ConfirmationToken;
 import com.lemmiwinks.myscheduleserver.entity.User;
+import com.lemmiwinks.myscheduleserver.repository.ConfirmationTokenRepository;
 import com.lemmiwinks.myscheduleserver.repository.UserRepository;
 import com.lemmiwinks.myscheduleserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 @Controller
@@ -19,6 +27,9 @@ public class RegistrationController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    ConfirmationTokenRepository confirmationTokenRepository;
 
     @GetMapping("/registration")
     public String registration(Model model) {
@@ -42,8 +53,7 @@ public class RegistrationController {
         }
 
         if (isInvalidUsername(userForm.getUsername())) {
-            model.addAttribute("usernameError", "Логин не должен начинаться или заканчиваться символами: " +
-                    "(., _, -). Содержать два и более специальных символов подряд или пробел.");
+            model.addAttribute("usernameError", "Логин не должен начинаться или заканчиваться символами: " + "(., _, -). Содержать два и более специальных символов подряд или пробел.");
             error = true;
         }
 
@@ -80,7 +90,6 @@ public class RegistrationController {
         return "message";
     }
 
-
     public void registerUser(@RequestBody User user) {
         userService.saveUser(user);
     }
@@ -89,7 +98,26 @@ public class RegistrationController {
     public String confirmUserAccount(@RequestParam("token") String confirmationToken, Model model) {
         model.addAttribute("title", "Верификация аккаунта");
 
+        // Получаем текущего аутентифицированного пользователя
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // Извлекаем имя пользователя из аутентифицированного объекта
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        User user = userRepository.findByUsername(userDetails.getUsername());
+
+        if (isTokenExpired(confirmationToken)) {
+            // Если токен старше 24 часов - не подтверждаем аккаунт
+            model.addAttribute("message", "Токен недействителен");
+            model.addAttribute("message-type", "error-message");
+            return "message";
+        }
+
         if (userService.confirmEmail(confirmationToken)) {
+
+            user.setEmailVerified(true);
+            userService.saveUser(user);
+
             model.addAttribute("message", "Поздравляем! Ваш аккаунт подтвержден");
             model.addAttribute("message-type", "success-message");
         } else {
@@ -98,7 +126,6 @@ public class RegistrationController {
         }
         return "message";
     }
-
 
     public static boolean isInvalidUsername(String username) {
         String USERNAME_PATTERN = "^(?!.*[._-]{2,})[a-zA-Zа-яА-ЯёЁ0-9][a-zA-Zа-яА-ЯёЁ0-9._-]*[a-zA-Zа-яА-ЯёЁ0-9]$";
@@ -111,5 +138,24 @@ public class RegistrationController {
 
         // Возвращаем true, если строка НЕ соответствует регулярному выражению
         return !matches;
+    }
+
+    public boolean isTokenExpired(String confirmationToken) {
+        // Получаем дату создания токена
+        Date tokenCreatedDate = confirmationTokenRepository.findByConfirmationToken(confirmationToken).getCreatedDate();
+        LocalDateTime tokenCreatedDateTime = convertToLocalDateTime(tokenCreatedDate);
+
+        // Получаем текущее время
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        // Вычисляем разницу во времени между текущим временем и датой создания токена
+        Duration duration = Duration.between(tokenCreatedDateTime, currentDateTime);
+
+        // Проверяем, прошло ли больше 24 часов
+        return duration.toHours() > 24;
+    }
+
+    public LocalDateTime convertToLocalDateTime(Date date) {
+        return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
 }

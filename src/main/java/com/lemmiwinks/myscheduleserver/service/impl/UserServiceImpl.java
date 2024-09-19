@@ -49,13 +49,10 @@ public class UserServiceImpl implements UserService {
         String verificationLink = "http://localhost:8080/confirm-account?token=" + confirmationToken.getConfirmationToken();
 
         String htmlSubject = "Приложение Запись клиентов - завершение регистрации";
-        String htmlContent = "Добро пожаловать, <b>" + user.getUsername() + "</b>!" + "<br>Чтобы завершить регистрацию, " +
-                "<a href='" + verificationLink + "'>перейдите по ссылке</a>." +
-                "<br>Ссылка действительна 24 часа.<br>";
+        String htmlContent = "Добро пожаловать, <b>" + user.getUsername() + "</b>!" + "<br>Чтобы завершить регистрацию, " + "<a href='" + verificationLink + "'>перейдите по ссылке</a>." + "<br>Ссылка действительна 24 часа.<br>";
 
         try {
-            emailService.sendEmailWithHtml(user.getUserEmail(),
-                    htmlSubject, htmlContent);
+            emailService.sendEmailWithHtml(user.getUserEmail(), htmlSubject, htmlContent);
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
@@ -72,6 +69,11 @@ public class UserServiceImpl implements UserService {
         }
 
         return token != null;
+    }
+
+    @Override
+    public void setEmailVerified(User user) {
+        user.setEmailVerified(true);
     }
 
     @Override

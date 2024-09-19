@@ -10,4 +10,6 @@ public interface UserService extends UserDetailsService {
     void saveUser(User user);
 
     Boolean confirmEmail(String confirmationToken);
+
+    void setEmailVerified(User user);
 }

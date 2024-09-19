@@ -18,23 +18,34 @@ public class User implements UserDetails { // Чтобы в дальнейшим
 
     private String userEmail;
 
+    private boolean emailVerified;
+
     private String password;
 
     @Transient // не имеет отображения в БД
     // Поле, показывающее, что пароль введен корректно
     private String passwordConfirm;
 
-    private boolean isEnabled;
+    private boolean isEnabled = false;
 
     // Конструктор по умолчанию
     public User() {
     }
 
+    public void setEmailVerified(Boolean emailVerified) {
+        this.emailVerified = emailVerified;
+    }
+
+    public Boolean getEmailVerified() {
+        return emailVerified;
+    }
+
     // Конструктор с параметрами
-    public User(Long id, String username, String userEmail, String password, String passwordConfirm, boolean isEnabled) {
+    public User(Long id, String username, String userEmail, Boolean emailVerified, String password, String passwordConfirm, boolean isEnabled) {
         this.id = id;
         this.username = username;
         this.userEmail = userEmail;
+        this.emailVerified = emailVerified;
         this.password = password;
         this.passwordConfirm = passwordConfirm;
         this.isEnabled = isEnabled;
@@ -109,6 +120,6 @@ public class User implements UserDetails { // Чтобы в дальнейшим
 
     @Override
     public boolean isEnabled() {
-        return this.isEnabled;
+        return true;
     }
 }

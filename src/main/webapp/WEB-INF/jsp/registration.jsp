@@ -30,13 +30,13 @@
     <h2>Регистрация нового пользователя</h2>
 
     <div>
-      <form:input type="text" path="username" placeholder="Имя пользователя" autofocus="true"></form:input>
+      <form:input type="text" path="username" placeholder="Имя пользователя"></form:input>
       <form:errors path="username" cssClass="error-message"></form:errors>
       <div class="error-message">${usernameError}</div>
     </div>
 
     <div>
-      <form:input type="text" path="userEmail" placeholder="Email" autofocus="true"></form:input>
+      <form:input type="text" path="userEmail" placeholder="Email"></form:input>
       <form:errors path="userEmail" cssClass="error-message"></form:errors>
       <div class="error-message">${userEmailError}</div>
     </div>
