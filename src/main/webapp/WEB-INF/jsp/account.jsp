@@ -37,6 +37,7 @@
                     <c:if test="${showResendButton}">
                         <div style="border: 2px solid red; padding: 10px; display: inline-block;">
                             <p>Отправить письмо для подтверждения аккаунта на мою почту (один раз в 24 часа)</p>
+                            <p style="color: ${resendTokenStatusMsgColor};">${resendTokenStatusMsg}</p>
                             <button type="submit">Отправить письмо</button>
                             <p>${token}</p>
                         </div>

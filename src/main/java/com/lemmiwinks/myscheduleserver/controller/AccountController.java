@@ -69,11 +69,12 @@ public class AccountController {
 
         if (!isTokenExpired(confirmationToken.getConfirmationToken())) {
             // Если токен старше 24 часов - не подтверждаем аккаунт
-            model.addAttribute("token", "С момента отправки предыдущего токена не прошло 24 часа.");
-            return "message";
+            model.addAttribute("resendTokenStatusMsg", "С момента отправки предыдущего токена не прошло 24 часа.");
+            model.addAttribute("resendTokenStatusMsgColor", "red");
         } else {
-            model.addAttribute("token", "Токен отправлен");
-            // здесь отправка нового токена
+            // Отправляем новый токен
+            model.addAttribute("resendTokenStatusMsg", "Новый токен отправлен на почту " + user.getUserEmail());
+            model.addAttribute("resendTokenStatusMsgColor", "green");
         }
 
         return "account"; // Возвращаемся на страницу аккаунта

@@ -42,6 +42,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // Доступ разрешён всем пользователям:
                 .antMatchers("/faq").permitAll() // faq API
+                .antMatchers("/api/calendar").permitAll()
+                .antMatchers("/api/user-events").permitAll()
                 .antMatchers("/confirm-account").permitAll()
 
                 // Доступ разрешён для всех ресурсов, если они есть
@@ -53,12 +55,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 // Настройка формы входа
-                .formLogin()
-                .loginPage("/login") // Страница входа
-                .defaultSuccessUrl("/") // Перенаправление на главную страницу после успешного входа
-                .permitAll() // Разрешение доступа к странице входа
-
+                    .formLogin()
+                    .loginPage("/login") // Страница входа
+                    .defaultSuccessUrl("/") // Перенаправление на главную страницу после успешного входа
+                    .failureHandler(new CustomAuthenticationFailureHandler()) // кастомный обработчик
+                    .failureUrl("/login?error")
+                    .permitAll() // Разрешение доступа к странице входа
                 .and()
+
                 // Настройка выхода из системы
                 .logout()
                 .permitAll() // Разрешение доступа к выходу из системы

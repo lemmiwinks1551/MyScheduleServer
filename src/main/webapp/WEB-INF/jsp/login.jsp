@@ -3,23 +3,28 @@
 
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Вход в аккаунт</title>
+    <head>
+      <meta charset="utf-8">
+      <title>Вход в аккаунт</title>
 
-    <style>
+      <style>
         .form-group {
         margin-top: 0.5em;
         margin-bottom: 0.5em;
         }
-    </style>
+        .error {
+            color: red;
+            margin-top: 1em;
+        }
+      </style>
 
-</head>
+    </head>
 
     <body>
     <sec:authorize access="isAuthenticated()">
       <% response.sendRedirect("/"); %>
     </sec:authorize>
+
         <div>
             <form action="/login" method="POST">
               <h2>Вход в систему</h2>
@@ -34,9 +39,17 @@
 
               <button type="submit">Войти</button>
 
-                <h4><a href="/">На главную</a></h4>
+              <h4><a href="/">На главную</a></h4>
 
             </form>
         </div>
+
+        <% if (request.getParameter("error") != null) { %>
+            <p style="color:red">
+                Не удалось выполнить вход в аккаунт.<br />
+                Ошибка: ${SPRING_SECURITY_LAST_EXCEPTION.message}
+            </p>
+        <% } %>
+
     </body>
 </html>
