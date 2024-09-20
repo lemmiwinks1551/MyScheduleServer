@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import javax.mail.MessagingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -49,7 +48,18 @@ public class UserServiceImpl implements UserService {
         String verificationLink = "http://localhost:8080/confirm-account?token=" + confirmationToken.getConfirmationToken();
 
         String htmlSubject = "Приложение Запись клиентов - завершение регистрации";
-        String htmlContent = "Добро пожаловать, <b>" + user.getUsername() + "</b>!" + "<br>Чтобы завершить регистрацию, " + "<a href='" + verificationLink + "'>перейдите по ссылке</a>." + "<br>Ссылка действительна 24 часа.<br>";
+        String htmlContent = "Добро пожаловать, <b>" + user.getUsername() + "</b>!"
+                + "<br>Чтобы завершить регистрацию, "
+                + "<a href='" + verificationLink + "'>перейдите по ссылке</a>."
+                + "<br>Ссылка действительна 24 часа.<br><br>"
+                + "<hr style='border:none; border-top:1px solid #ccc;'/>"
+                + "<p style='font-size:14px; color:#333;'>"
+                + "С уважением,<br>"
+                + "<b>Команда ScheduleApp</b><br>"
+                + "<span style='font-size:12px; color:#888;'>"
+                + "Пожалуйста, не отвечайте на это письмо.<br>"
+                + "Для связи с нами используйте контактные данные на нашем сайте."
+                + "</span></p>";
 
         try {
             emailService.sendEmailWithHtml(user.getUserEmail(), htmlSubject, htmlContent);
@@ -59,21 +69,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean confirmEmail(String confirmationToken) {
-        ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
-
-        if (token != null) {
-            User user = userRepository.findByUserEmail(token.getUserEntity().getUserEmail());
-            user.setEnabled(true);
-            userRepository.save(user);
-        }
-
-        return token != null;
-    }
-
-    @Override
-    public void setEmailVerified(User user) {
-        user.setEmailVerified(true);
+    public void updateUser(User user) {
+        userRepository.save(user);
     }
 
     @Override

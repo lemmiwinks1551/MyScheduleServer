@@ -26,7 +26,7 @@ public class User implements UserDetails { // Чтобы в дальнейшим
     // Поле, показывающее, что пароль введен корректно
     private String passwordConfirm;
 
-    private boolean isEnabled = false;
+    private boolean isEnabled = true;
 
     // Конструктор по умолчанию
     public User() {

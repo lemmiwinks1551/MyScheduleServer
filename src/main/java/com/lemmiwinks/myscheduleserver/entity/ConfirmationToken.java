@@ -46,6 +46,10 @@ public class ConfirmationToken {
         return createdDate;
     }
 
+    public User getUserEntity() {
+        return user;
+    }
+
     // Setters
 
     public void setTokenId(Long tokenId) {
@@ -60,7 +64,7 @@ public class ConfirmationToken {
         this.createdDate = createdDate;
     }
 
-    public User getUserEntity() {
-        return user;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -29,15 +28,40 @@ public class AccountController {
 
     @GetMapping("/account")
     public String account(Model model) {
-        // Получаем текущего аутентифицированного пользователя
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        // Извлекаем имя пользователя из аутентифицированного объекта
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
         User user = userRepository.findByUsername(userDetails.getUsername());
 
-        // Заполняем модель атрибутами для отображения на странице
+        inflateAccountModel(model, user);
+
+        return "account";
+    }
+
+    @PostMapping("/resend-confirmation-email")
+    public String resendConfirmationEmail(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        User user = userRepository.findByUsername(userDetails.getUsername());
+
+        ConfirmationToken confirmationToken = confirmationTokenRepository.findByUserId(user.getId());
+
+        if (!isTokenExpired(confirmationToken.getConfirmationToken())) {
+            model.addAttribute("resendTokenStatusMsg", "С момента отправки предыдущего токена не прошло 24 часа.");
+            model.addAttribute("resendTokenStatusMsgColor", "red");
+        } else {
+            // Генерируем новый токен и отправляем пользователю на почту
+
+            model.addAttribute("resendTokenStatusMsg", "Новый токен отправлен на почту " + user.getUserEmail());
+            model.addAttribute("resendTokenStatusMsgColor", "green");
+        }
+
+        // Повторно заполняем модель для корректного отображения страницы аккаунта
+        inflateAccountModel(model, user);
+
+        return "account";
+    }
+
+    private void inflateAccountModel(Model model, User user) {
         model.addAttribute("username", user.getUsername());
         model.addAttribute("userEmail", user.getUserEmail());
 
@@ -50,34 +74,6 @@ public class AccountController {
             model.addAttribute("verificationColor", "red");
             model.addAttribute("showResendButton", true);
         }
-
-        return "account";
-    }
-
-    // Обработчик для отправки подтверждающего письма
-    @PostMapping("/resend-confirmation-email")
-    public String resendConfirmationEmail(Model model) {
-        // Получаем текущего аутентифицированного пользователя
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        // Извлекаем имя пользователя из аутентифицированного объекта
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
-        User user = userRepository.findByUsername(userDetails.getUsername());
-
-        ConfirmationToken confirmationToken = confirmationTokenRepository.findByUserId(user.getId());
-
-        if (!isTokenExpired(confirmationToken.getConfirmationToken())) {
-            // Если токен старше 24 часов - не подтверждаем аккаунт
-            model.addAttribute("resendTokenStatusMsg", "С момента отправки предыдущего токена не прошло 24 часа.");
-            model.addAttribute("resendTokenStatusMsgColor", "red");
-        } else {
-            // Отправляем новый токен
-            model.addAttribute("resendTokenStatusMsg", "Новый токен отправлен на почту " + user.getUserEmail());
-            model.addAttribute("resendTokenStatusMsgColor", "green");
-        }
-
-        return "account"; // Возвращаемся на страницу аккаунта
     }
 
     public boolean isTokenExpired(String confirmationToken) {

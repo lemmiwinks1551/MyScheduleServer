@@ -6,17 +6,16 @@ import com.lemmiwinks.myscheduleserver.repository.ConfirmationTokenRepository;
 import com.lemmiwinks.myscheduleserver.repository.UserRepository;
 import com.lemmiwinks.myscheduleserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Controller
@@ -98,32 +97,47 @@ public class RegistrationController {
     public String confirmUserAccount(@RequestParam("token") String confirmationToken, Model model) {
         model.addAttribute("title", "Верификация аккаунта");
 
-        // Получаем текущего аутентифицированного пользователя
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        try {
+            ConfirmationToken confirmationTokenEntity = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
 
-        // Извлекаем имя пользователя из аутентифицированного объекта
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            // Проверяем, существует ли такой ConfirmationToken
+            if (confirmationTokenEntity == null) {
+                model.addAttribute("message", "Токен не найден");
+                model.addAttribute("message-type", "error-message");
+                return "message";
+            }
 
-        User user = userRepository.findByUsername(userDetails.getUsername());
+            // Проверяем, истек ли токен
+            if (isTokenExpired(confirmationToken)) {
+                model.addAttribute("message", "Токен недействителен");
+                model.addAttribute("message-type", "error-message");
+                return "message";
+            }
 
-        if (isTokenExpired(confirmationToken)) {
-            // Если токен старше 24 часов - не подтверждаем аккаунт
-            model.addAttribute("message", "Токен недействителен");
-            model.addAttribute("message-type", "error-message");
-            return "message";
-        }
+            // Получаем юзера по токену
+            Optional<User> userOptional = userRepository.findById(confirmationTokenEntity.getUserEntity().getId());
 
-        if (userService.confirmEmail(confirmationToken)) {
+            // Проверяем, существует ли пользователь
+            if (!userOptional.isPresent()) {
+                model.addAttribute("message", "Пользователь не найден");
+                model.addAttribute("message-type", "error-message");
+                return "message";
+            }
+
+            User user = userOptional.get();
+
+            // Подтверждение аккаунта
 
             user.setEmailVerified(true);
-            userService.saveUser(user);
+            userService.updateUser(user);
 
             model.addAttribute("message", "Поздравляем! Ваш аккаунт подтвержден");
             model.addAttribute("message-type", "success-message");
-        } else {
-            model.addAttribute("message", "Не удалось подтвердить аккаунт");
+        } catch (Exception e) {
+            model.addAttribute("message", "Не удалось подтвердить аккаунт. Возникла непредвиденная ошибка.");
             model.addAttribute("message-type", "error-message");
         }
+
         return "message";
     }
 
