@@ -4,21 +4,18 @@
 
 <!DOCTYPE html>
 <html>
-<head>
-  <link rel="shortcut icon" type="image/x-icon" href="/resources/static/favicon.ico" />
-  <meta charset="utf-8">
-  <title>Сообщение</title>
+    <head>
+        <link rel="shortcut icon" type="image/x-icon" href="/resources/static/favicon.ico" />
+        <meta charset="utf-8">
+        <title>Подтверждение аккаунта</title>
+    </head>
 
-</head>
+    <body>
+        <div>
+            <h1>${message}</h1>
 
-<body>
-
-<div>
-
-  <h1>${message}</h1>
-
-  <a href="/"><br>На главную<br></a>
-  <a href="/login"><br>Вход<br></a>
-</div>
-</body>
+            <a href="/"><br>На главную<br></a>
+            <a href="/login"><br>Вход<br></a>
+        </div>
+    </body>
 </html>

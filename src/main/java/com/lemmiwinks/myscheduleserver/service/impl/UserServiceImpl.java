@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
                 + "<hr style='border:none; border-top:1px solid #ccc;'/>"
                 + "<p style='font-size:14px; color:#333;'>"
                 + "С уважением,<br>"
-                + "<b>Команда ScheduleApp</b><br>"
+                + "<b>Команда приложения Запись клиентов</b><br>"
                 + "<span style='font-size:12px; color:#888;'>"
                 + "Пожалуйста, не отвечайте на это письмо.<br>"
                 + "Для связи с нами используйте контактные данные на нашем сайте."

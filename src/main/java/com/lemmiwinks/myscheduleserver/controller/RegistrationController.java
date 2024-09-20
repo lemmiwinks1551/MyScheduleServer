@@ -103,14 +103,12 @@ public class RegistrationController {
             // Проверяем, существует ли такой ConfirmationToken
             if (confirmationTokenEntity == null) {
                 model.addAttribute("message", "Токен не найден");
-                model.addAttribute("message-type", "error-message");
                 return "message";
             }
 
             // Проверяем, истек ли токен
             if (isTokenExpired(confirmationToken)) {
-                model.addAttribute("message", "Токен недействителен");
-                model.addAttribute("message-type", "error-message");
+                model.addAttribute("message", "Истек срок действия токена");
                 return "message";
             }
 
@@ -120,11 +118,16 @@ public class RegistrationController {
             // Проверяем, существует ли пользователь
             if (!userOptional.isPresent()) {
                 model.addAttribute("message", "Пользователь не найден");
-                model.addAttribute("message-type", "error-message");
                 return "message";
             }
 
             User user = userOptional.get();
+
+            // Проверяем, существует ли пользователь
+            if (user.getEmailVerified()) {
+                model.addAttribute("message", "Аккаунт уже был подтвержден");
+                return "message";
+            }
 
             // Подтверждение аккаунта
 
@@ -132,10 +135,8 @@ public class RegistrationController {
             userService.updateUser(user);
 
             model.addAttribute("message", "Поздравляем! Ваш аккаунт подтвержден");
-            model.addAttribute("message-type", "success-message");
         } catch (Exception e) {
             model.addAttribute("message", "Не удалось подтвердить аккаунт. Возникла непредвиденная ошибка.");
-            model.addAttribute("message-type", "error-message");
         }
 
         return "message";
