@@ -37,6 +37,9 @@
     <h4><a href="/logout">Выйти</a></h4>
   </sec:authorize>
 
+  <h4>Почтовый адрес для связи с разработчиками: scheduleapp@mail.ru</h4>
+
+
 </div>
 </body>
 </html>
