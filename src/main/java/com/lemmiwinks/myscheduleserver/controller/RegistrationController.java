@@ -23,10 +23,8 @@ public class RegistrationController {
 
     @Autowired
     private UserService userService;
-
     @Autowired
     UserRepository userRepository;
-
     @Autowired
     ConfirmationTokenRepository confirmationTokenRepository;
 

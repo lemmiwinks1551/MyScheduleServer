@@ -4,6 +4,7 @@ import com.lemmiwinks.myscheduleserver.entity.ConfirmationToken;
 import com.lemmiwinks.myscheduleserver.entity.User;
 import com.lemmiwinks.myscheduleserver.repository.ConfirmationTokenRepository;
 import com.lemmiwinks.myscheduleserver.repository.UserRepository;
+import com.lemmiwinks.myscheduleserver.service.ConfirmationTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,6 +26,9 @@ public class AccountController {
 
     @Autowired
     ConfirmationTokenRepository confirmationTokenRepository;
+
+    @Autowired
+    ConfirmationTokenService confirmationTokeService;
 
     @GetMapping("/account")
     public String account(Model model) {
@@ -50,6 +54,9 @@ public class AccountController {
             model.addAttribute("resendTokenStatusMsgColor", "red");
         } else {
             // Генерируем новый токен и отправляем пользователю на почту
+            // РЕАЛИЗОВАТЬ + КАПЧУ ПРИ РЕГИСТРАЦИИ + РЕАЛИЗАЦИЯ "ЗАБЫЛ ПАРОЛЬ"
+            confirmationTokeService.updateToken(confirmationToken);
+            confirmationTokeService.sendVerificationEmail(user);
 
             model.addAttribute("resendTokenStatusMsg", "Новый токен отправлен на почту " + user.getUserEmail());
             model.addAttribute("resendTokenStatusMsgColor", "green");
