@@ -55,10 +55,24 @@
 
     <h1 class="success-message">${message}</h1>
 
+    <input type="hidden" id="recaptchaToken" name="recaptchaToken">
+    <div class="error-message">${captchaError}</div>
+
     <button type="submit">Зарегистрироваться</button>
   </form:form>
   <h4><a href="/">На главную</a></h4>
 
 </div>
+
+<script src="https://www.google.com/recaptcha/api.js?render=6LcWvksqAAAAADwW_fJN3vQDwpIV46GVisqbkoCY"></script>
+<script>
+    grecaptcha.ready(function() {
+        grecaptcha.execute('6LcWvksqAAAAADwW_fJN3vQDwpIV46GVisqbkoCY', {action: 'submit'}).then(function(token) {
+            document.getElementById('recaptchaToken').value = token;
+        });
+    });
+</script>
+
+
 </body>
 </html>

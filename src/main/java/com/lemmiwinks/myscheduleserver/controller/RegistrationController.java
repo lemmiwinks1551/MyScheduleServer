@@ -6,16 +6,18 @@ import com.lemmiwinks.myscheduleserver.repository.ConfirmationTokenRepository;
 import com.lemmiwinks.myscheduleserver.repository.UserRepository;
 import com.lemmiwinks.myscheduleserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Pattern;
 
 @Controller
@@ -23,10 +25,15 @@ public class RegistrationController {
 
     @Autowired
     private UserService userService;
+
     @Autowired
     UserRepository userRepository;
+
     @Autowired
     ConfirmationTokenRepository confirmationTokenRepository;
+
+    @Value("${server.port}")
+    private String port;
 
     @GetMapping("/registration")
     public String registration(Model model) {
@@ -36,8 +43,18 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String addUser(@ModelAttribute("userForm") @Valid User userForm, Model model) {
+    public String addUser(@ModelAttribute("userForm") @Valid User userForm,
+                          @RequestParam("recaptchaToken") String recaptchaToken,
+                          Model model) {
         boolean error = false;
+
+/*        if (!Objects.equals(port, "8080")) {
+            if (!verifyRecaptcha(recaptchaToken)) {
+                // Временно отключил проверку капчи, не работает локально
+                model.addAttribute("captchaError", "reCaptcha проверка не пройдена.");
+                error = true;
+            }
+        }*/
 
         if (userRepository.existsByUsername(userForm.getUsername())) {
             model.addAttribute("usernameError", "Пользователь с таким логином уже существует");
@@ -171,4 +188,20 @@ public class RegistrationController {
     public LocalDateTime convertToLocalDateTime(Date date) {
         return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
+
+    public boolean verifyRecaptcha(String recaptchaToken) {
+        String secretKey = "6LcWvksqAAAAAJChXaxGt20iQ-WC2d7JY19yrHbe";
+        String url = "https://www.google.com/recaptcha/api/siteverify";
+
+        RestTemplate restTemplate = new RestTemplate();
+        Map<String, String> body = new HashMap<>();
+        body.put("secret", secretKey);
+        body.put("response", recaptchaToken);
+
+        ResponseEntity<Map> recaptchaResponse = restTemplate.postForEntity(url, body, Map.class);
+        Map<String, Object> responseBody = recaptchaResponse.getBody();
+
+        return responseBody != null && (boolean) responseBody.get("success");
+    }
+
 }
