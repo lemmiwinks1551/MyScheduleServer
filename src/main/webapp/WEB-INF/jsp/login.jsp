@@ -39,6 +39,10 @@
 
               <button type="submit">Войти</button>
 
+              <div class="forgot-password">
+                <a href="/forgot-password">Забыл пароль?</a>
+              </div>
+
               <h4><a href="/">На главную</a></h4>
 
             </form>

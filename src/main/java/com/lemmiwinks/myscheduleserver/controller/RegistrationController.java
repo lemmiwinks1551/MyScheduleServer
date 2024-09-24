@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-
 import javax.validation.Valid;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -34,6 +33,9 @@ public class RegistrationController {
 
     @Value("${server.port}")
     private String port;
+
+    @Value("${google.recaptcha.secret}")
+    private String googleRecaptchaSecret;
 
     @GetMapping("/registration")
     public String registration(Model model) {
@@ -190,7 +192,7 @@ public class RegistrationController {
     }
 
     public boolean verifyRecaptcha(String recaptchaToken) {
-        String secretKey = "6LcWvksqAAAAAJChXaxGt20iQ-WC2d7JY19yrHbe";
+        String secretKey = googleRecaptchaSecret;
         String url = "https://www.google.com/recaptcha/api/siteverify";
 
         RestTemplate restTemplate = new RestTemplate();
@@ -203,5 +205,4 @@ public class RegistrationController {
 
         return responseBody != null && (boolean) responseBody.get("success");
     }
-
 }

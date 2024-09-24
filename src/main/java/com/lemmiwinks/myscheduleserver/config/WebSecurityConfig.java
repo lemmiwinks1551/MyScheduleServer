@@ -45,6 +45,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/calendar").permitAll()
                 .antMatchers("/api/user-events").permitAll()
                 .antMatchers("/confirm-account").permitAll()
+                .antMatchers("/forgot-password").permitAll()
+                .antMatchers("/password-reset").permitAll()
+                .antMatchers("/message").permitAll()
 
                 // Доступ разрешён для всех ресурсов, если они есть
                 .antMatchers("/resources/**").permitAll()

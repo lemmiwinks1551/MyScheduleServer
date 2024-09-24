@@ -7,7 +7,7 @@
     <head>
         <link rel="shortcut icon" type="image/x-icon" href="/resources/static/favicon.ico" />
         <meta charset="utf-8">
-        <title>Подтверждение аккаунта</title>
+        <title>Сообщение</title>
     </head>
 
     <body>
