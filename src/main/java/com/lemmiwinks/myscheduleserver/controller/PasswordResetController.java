@@ -23,16 +23,12 @@ public class PasswordResetController {
 
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private PasswordResetTokenRepository passwordResetTokenRepository;
-
     @Autowired
     private UserService userService; // Сервис для работы с пользователями
-
     @Autowired
     private EmailService emailService; // Сервис для отправки email
-
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -111,7 +107,7 @@ public class PasswordResetController {
     }
 
     @GetMapping("/password-reset")
-    public String showPasswordResetForm(@RequestParam("token") String passwordResetToken, Model model, RedirectAttributes redirectAttributes) {
+    public String showPasswordResetForm(@RequestParam("token") String passwordResetToken, Model model) {
         // Найти токен в базе данных
         PasswordResetToken resetToken = passwordResetTokenRepository.findByPasswordResetToken(passwordResetToken);
 
@@ -157,7 +153,7 @@ public class PasswordResetController {
 
         // Обновление пароля пользователя
         User user = resetToken.getUserEntity();
-        String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
+        String encodedPassword = bCryptPasswordEncoder.encode(newPassword);
         user.setPassword(encodedPassword);
 
         userService.updateUser(user);
