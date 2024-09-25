@@ -7,7 +7,6 @@ import com.lemmiwinks.myscheduleserver.repository.UserRepository;
 import com.lemmiwinks.myscheduleserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,11 +29,11 @@ public class RegistrationController {
     @Autowired
     ConfirmationTokenRepository confirmationTokenRepository;
 
+    @Value("${SMARTCAPTCHA_SERVER_KEY}")
+    private String SMARTCAPTCHA_SERVER_KEY;
+
     @Value("${server.port}")
     private String port;
-
-    @Value("${google.recaptcha.secret}")
-    private String googleRecaptchaSecret;
 
     @GetMapping("/registration")
     public String registration(Model model) {
@@ -45,17 +44,15 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String addUser(@ModelAttribute("userForm") @Valid User userForm,
-                          @RequestParam("recaptchaToken") String recaptchaToken,
+                          @RequestParam("smart-token") String captchaToken,
                           Model model) {
         boolean error = false;
 
-/*        if (!Objects.equals(port, "8080")) {
-            if (!verifyRecaptcha(recaptchaToken)) {
-                // Временно отключил проверку капчи, не работает локально
-                model.addAttribute("captchaError", "reCaptcha проверка не пройдена.");
-                error = true;
-            }
-        }*/
+        // Проверяем капчу
+        if (!validateCaptcha(captchaToken)) {
+            model.addAttribute("captchaError", "Проверка капчи не пройдена. Попробуйте снова.");
+            return "registration";  // Возвращаем пользователя обратно на страницу регистрации
+        }
 
         if (userRepository.existsByUsername(userForm.getUsername())) {
             model.addAttribute("usernameError", "Пользователь с таким логином уже существует");
@@ -167,18 +164,24 @@ public class RegistrationController {
         return !matches;
     }
 
-    public boolean verifyRecaptcha(String recaptchaToken) {
-        String secretKey = googleRecaptchaSecret;
-        String url = "https://www.google.com/recaptcha/api/siteverify";
-
+    private boolean validateCaptcha(String captchaToken) {
+        String url = "https://smartcaptcha.yandexcloud.net/validate";
         RestTemplate restTemplate = new RestTemplate();
-        Map<String, String> body = new HashMap<>();
-        body.put("secret", secretKey);
-        body.put("response", recaptchaToken);
 
-        ResponseEntity<Map> recaptchaResponse = restTemplate.postForEntity(url, body, Map.class);
-        Map<String, Object> responseBody = recaptchaResponse.getBody();
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("secret", SMARTCAPTCHA_SERVER_KEY);
+        requestBody.put("token", captchaToken);
 
-        return responseBody != null && (boolean) responseBody.get("success");
+        try {
+            // Отправка запроса на проверку капчи
+            Map<String, Object> response = restTemplate.postForObject(url, requestBody, Map.class);
+
+            // Проверяем статус ответа
+            return "ok".equals(response.get("status"));
+        } catch (Exception e) {
+            // Обработка ошибок, например, если произошла ошибка валидации капчи
+            System.err.println("Ошибка проверки капчи: " + e.getMessage());
+            return false;
+        }
     }
 }
