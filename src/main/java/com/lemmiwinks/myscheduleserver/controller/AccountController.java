@@ -13,10 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 
 @Controller
 public class AccountController {
@@ -49,13 +45,13 @@ public class AccountController {
 
         ConfirmationToken confirmationToken = confirmationTokenRepository.findByUserId(user.getId());
 
-        if (!isTokenExpired(confirmationToken.getConfirmationToken())) {
+        if (confirmationToken != null) {
+            // Если токен уже есть в репозитории - значит его срок действия еще не истек и новый не отправляем
             model.addAttribute("resendTokenStatusMsg", "С момента отправки предыдущего токена не прошло 24 часа.");
             model.addAttribute("resendTokenStatusMsgColor", "red");
         } else {
-            // Генерируем новый токен и отправляем пользователю на почту
-            // РЕАЛИЗОВАТЬ + КАПЧУ ПРИ РЕГИСТРАЦИИ + РЕАЛИЗАЦИЯ "ЗАБЫЛ ПАРОЛЬ"
-            confirmationTokeService.updateToken(confirmationToken);
+            // Если токена нет в репозитории - создаем новый и отправляем на почту пользователю
+            confirmationTokeService.saveToken(user);
             confirmationTokeService.sendVerificationEmail(user);
 
             model.addAttribute("resendTokenStatusMsg", "Новый токен отправлен на почту " + user.getUserEmail());
@@ -81,24 +77,5 @@ public class AccountController {
             model.addAttribute("verificationColor", "red");
             model.addAttribute("showResendButton", true);
         }
-    }
-
-    public boolean isTokenExpired(String confirmationToken) {
-        // Получаем дату создания токена
-        Date tokenCreatedDate = confirmationTokenRepository.findByConfirmationToken(confirmationToken).getCreatedDate();
-        LocalDateTime tokenCreatedDateTime = convertToLocalDateTime(tokenCreatedDate);
-
-        // Получаем текущее время
-        LocalDateTime currentDateTime = LocalDateTime.now();
-
-        // Вычисляем разницу во времени между текущим временем и датой создания токена
-        Duration duration = Duration.between(tokenCreatedDateTime, currentDateTime);
-
-        // Проверяем, прошло ли больше 24 часов
-        return duration.toHours() > 24;
-    }
-
-    public LocalDateTime convertToLocalDateTime(Date date) {
-        return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
 }
