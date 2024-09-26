@@ -41,13 +41,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/news").hasRole("ADMIN")*/
 
                 // Доступ разрешён всем пользователям:
-                .antMatchers("/faq").permitAll() // faq API
-                .antMatchers("/api/calendar/*").permitAll()
+                .antMatchers("/faq").permitAll()
+                .antMatchers("/api/calendar/get-year/2024").permitAll()
                 .antMatchers("/api/user-events").permitAll()
                 .antMatchers("/confirm-account").permitAll()
                 .antMatchers("/forgot-password").permitAll()
                 .antMatchers("/password-reset").permitAll()
                 .antMatchers("/message").permitAll()
+                .antMatchers("/").permitAll()
+                .antMatchers("/index").permitAll()
 
                 // Доступ разрешён для всех ресурсов, если они есть
                 .antMatchers("/resources/**").permitAll()
