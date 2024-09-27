@@ -7,14 +7,18 @@ import com.lemmiwinks.myscheduleserver.repository.UserRepository;
 import com.lemmiwinks.myscheduleserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -49,12 +53,10 @@ public class RegistrationController {
                           Model model) {
         boolean error = false;
 
-        // Проверяем капчу (не проверяем на локалхосте)
-        if (!Objects.equals(port, "8080")) {
-            if (!validateCaptcha(captchaToken)) {
-                model.addAttribute("captchaError", "Проверка капчи не пройдена. Попробуйте снова.");
-                return "registration";  // Возвращаем пользователя обратно на страницу регистрации
-            }
+        // Проверяем капчу (не проверяем локально)
+        if (!captchaPassed(captchaToken)) {
+            model.addAttribute("captchaError", "Проверка капчи не пройдена. Попробуйте снова.");
+            error = true;
         }
 
         if (userRepository.existsByUsername(userForm.getUsername())) {
@@ -167,24 +169,30 @@ public class RegistrationController {
         return !matches;
     }
 
-    private boolean validateCaptcha(String captchaToken) {
+    private boolean captchaPassed(String captchaToken) {
         String url = "https://smartcaptcha.yandexcloud.net/validate";
         RestTemplate restTemplate = new RestTemplate();
 
-        Map<String, String> requestBody = new HashMap<>();
-        requestBody.put("secret", SMARTCAPTCHA_SERVER_KEY);
-        requestBody.put("token", captchaToken);
+        // Подготовка заголовков запроса
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        try {
-            // Отправка запроса на проверку капчи
-            Map<String, Object> response = restTemplate.postForObject(url, requestBody, Map.class);
+        // Подготовка тела запроса
+        MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
+        requestBody.add("secret", SMARTCAPTCHA_SERVER_KEY);
+        requestBody.add("token", captchaToken);
 
-            // Проверяем статус ответа
-            return "ok".equals(response.get("status"));
-        } catch (Exception e) {
-            // Обработка ошибок, например, если произошла ошибка валидации капчи
-            System.err.println("Ошибка проверки капчи: " + e.getMessage());
+        // Объединяем заголовки и тело запроса
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(requestBody, headers);
+
+        // Отправляем запрос с заголовками и телом
+        Map<String, Object> response = restTemplate.postForObject(url, requestEntity, Map.class);
+
+        if ("ok".equals(response.get("status"))) {
+            return true;
+        } else {
             return false;
         }
     }
+
 }
