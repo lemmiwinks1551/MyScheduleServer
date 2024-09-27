@@ -17,12 +17,8 @@ import javax.persistence.PersistenceContext;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @PersistenceContext
-    private EntityManager em;
     @Autowired
     UserRepository userRepository;
-    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     ConfirmationTokenRepository confirmationTokenRepository;
     @Autowired
@@ -33,7 +29,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveUser(User user) {
         // Хеширование пароля перед сохранением пользователя
-        String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
+        String encodedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
 
         user.setPassword(encodedPassword);
 

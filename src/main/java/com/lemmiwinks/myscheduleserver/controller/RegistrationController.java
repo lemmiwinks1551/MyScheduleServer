@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -48,10 +49,12 @@ public class RegistrationController {
                           Model model) {
         boolean error = false;
 
-        // Проверяем капчу
-        if (!validateCaptcha(captchaToken)) {
-            model.addAttribute("captchaError", "Проверка капчи не пройдена. Попробуйте снова.");
-            return "registration";  // Возвращаем пользователя обратно на страницу регистрации
+        // Проверяем капчу (не проверяем на локалхосте)
+        if (!Objects.equals(port, "8080")) {
+            if (!validateCaptcha(captchaToken)) {
+                model.addAttribute("captchaError", "Проверка капчи не пройдена. Попробуйте снова.");
+                return "registration";  // Возвращаем пользователя обратно на страницу регистрации
+            }
         }
 
         if (userRepository.existsByUsername(userForm.getUsername())) {
