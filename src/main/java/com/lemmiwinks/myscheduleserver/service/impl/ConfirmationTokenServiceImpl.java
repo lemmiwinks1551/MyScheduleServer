@@ -6,6 +6,7 @@ import com.lemmiwinks.myscheduleserver.repository.ConfirmationTokenRepository;
 import com.lemmiwinks.myscheduleserver.service.ConfirmationTokenService;
 import com.lemmiwinks.myscheduleserver.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -18,6 +19,8 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
     ConfirmationTokenRepository confirmationTokenRepository;
     @Autowired
     EmailService emailService;
+    @Value("${web.url}")
+    private String webUrl;
 
     @Override
     public void saveToken(User user) {
@@ -44,7 +47,7 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
     public void sendVerificationEmail(User user) {
         ConfirmationToken confirmationToken = confirmationTokenRepository.findByUserId(user.getId());
 
-        String verificationLink = "http://localhost:8080/confirm-account?token=" + confirmationToken.getConfirmationToken();
+        String verificationLink = webUrl + "/confirm-account?token=" + confirmationToken.getConfirmationToken();
 
         String htmlSubject = "Приложение Запись клиентов - завершение регистрации";
         String htmlContent = "Добро пожаловать, <b>" + user.getUsername() + "</b>!"

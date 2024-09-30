@@ -8,6 +8,7 @@ import com.lemmiwinks.myscheduleserver.service.EmailService;
 import com.lemmiwinks.myscheduleserver.service.UserService;
 import com.lemmiwinks.myscheduleserver.service.Util;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +32,8 @@ public class PasswordResetController {
     private EmailService emailService; // Сервис для отправки email
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Value("${web.url}")
+    private String webUrl;
 
     // Показать страницу восстановления пароля
     @GetMapping("/forgot-password")
@@ -82,7 +85,7 @@ public class PasswordResetController {
     public void sendPasswordResetEmail(User user) {
         PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByUserId(user.getId());
 
-        String verificationLink = "http://localhost:8080/password-reset?token=" + passwordResetToken.getConfirmationToken();
+        String verificationLink = webUrl + "/password-reset?token=" + passwordResetToken.getConfirmationToken();
 
         String htmlSubject = "Приложение Запись клиентов - сброс пароля";
         String htmlContent = "Добро пожаловать, <b>" + user.getUsername() + "</b>!"
