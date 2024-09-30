@@ -50,6 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/message").permitAll()
                 .antMatchers("/").permitAll()
                 .antMatchers("/index").permitAll()
+                .antMatchers("/actuator/prometheus/").permitAll()
 
                 // Доступ разрешён для всех ресурсов, если они есть
                 .antMatchers("/resources/**").permitAll()
