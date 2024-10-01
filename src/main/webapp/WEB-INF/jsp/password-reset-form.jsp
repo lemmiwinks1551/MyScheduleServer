@@ -1,54 +1,150 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 
 <!DOCTYPE html>
-<html>
-    <head>
-      <meta charset="utf-8">
-      <title>Сброс пароля</title>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сброс пароля</title>
 
-      <style>
+    <!-- Подключение Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            width: 95%;
+
+        }
+
+        label {
+            font-size: 0.9em;
+            color: #333;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
         .error-message {
-          color: red;
-          font-size: 0.9em;
-          margin-top: 0.5em;
+            color: red;
+            font-size: 0.9em;
+            margin-top: 5px;
         }
+
         .success-message {
-          color: green;
-          font-size: 0.9em;
-          margin-top: 0.5em;
+            color: green;
+            font-size: 0.9em;
+            margin-top: 5px;
+            text-align: center;
         }
-      </style>
 
-    </head>
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #ffeb3b;
+            border: none;
+            border-radius: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+             margin-top: 10px;
+            margin-bottom: 10px;
+        }
 
-    <body>
+        button:hover {
+            background-color: #ffd600;
+        }
 
-        <div class="form-group">
+        h4 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        h4 a {
+            color: #ffeb3b;
+            text-decoration: none;
+        }
+
+        h4 a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-container">
+        <h2>Сброс пароля</h2>
+
+        <!-- Форма для сброса пароля -->
         <form method="POST" action="/password-reset">
-                <input type="hidden" name="token" value="${token}">
+            <!-- Токен -->
+            <input type="hidden" name="token" value="${token}">
 
-                <div
-                    <label for="newPassword">Новый пароль:</label>
-                    <input id="newPassword" name="newPassword" type="password" placeholder="Введите новый пароль" required class="input-field">
-                    <div class="error-message">${passwordError}</div>
+            <!-- Поле для нового пароля -->
+            <div class="form-group">
+                <label for="newPassword">Новый пароль:</label>
+                <input id="newPassword" name="newPassword" type="password" placeholder="Введите новый пароль" required>
+                <div class="error-message">${passwordError}</div>
+            </div>
 
-                </div>
+            <!-- Подтверждение нового пароля -->
+            <div class="form-group">
+                <label for="newPasswordConfirm">Подтверждение пароля:</label>
+                <input id="newPasswordConfirm" name="newPasswordConfirm" type="password" placeholder="Введите новый пароль еще раз" required>
+                <div class="error-message">${passwordError}</div>
+            </div>
 
-                <div
-                    <label for="newPasswordConfirm">Подтверждение пароля:</label>
-                    <input id="newPasswordConfirm" name="newPasswordConfirm" type="password" placeholder="Введите новый пароль еще раз" required class="input-field">
-                    <div class="error-message">${passwordError}</div>
+            <!-- Сообщение об успехе -->
+            <div class="success-message">${message}</div>
 
-                </div>
+            <!-- Кнопка смены пароля -->
+            <button type="submit">Сменить пароль</button>
+        </form>
 
-                    <div class="success-message">${message}</div>
-
-                <button type="submit">Сменить пароль</button>
-            </form>
-        </div>
-
-      <h4><a href="/">На главную</a></h4>
-
-    </body>
-
+        <!-- Ссылка на главную страницу -->
+        <a href="/"> <button>На главную </button> </a>
+    </div>
+</body>
 </html>

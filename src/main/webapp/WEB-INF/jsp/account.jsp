@@ -3,49 +3,136 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
-<html>
-    <head>
-      <meta charset="utf-8">
-      <title>Мой аккаунт</title>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой аккаунт</title>
 
-      <style>
-            .form-group {
-            margin-top: 0.5em;
-            margin-bottom: 0.5em;
+    <!-- Подключение Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+        }
+
+        .account-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        p {
+            font-size: 1em;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .status-message {
+            font-size: 0.9em;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #ffeb3b;
+            border: none;
+            border-radius: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background-color: #ffd600;
+
+        }
+
+        .verification-container p {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        h4 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        h4 a {
+            color: #ffeb3b;
+            text-decoration: none;
+        }
+
+        h4 a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .account-container {
+                padding: 15px;
             }
-       </style>
+        }
+    </style>
+</head>
 
-    <h2>Мой аккаунт</h2>
+<body>
+    <div class="account-container">
+        <h2>Мой аккаунт</h2>
 
-    </head>
+        <!-- Информация о пользователе -->
+        <div>
+            <p><strong>Имя пользователя:</strong> ${username}</p>
+            <p><strong>Email:</strong> ${userEmail}</p>
+        </div>
 
-    <body>
-        <form:form method="POST" modelAttribute="userForm">
+        <!-- Статус верификации -->
+        <div class="status-message" style="color: ${verificationColor};">
+            ${isVerified}
+        </div>
 
-                <div>
-                    <p>Имя пользователя: ${username}</p>
-                </div>
+        <!-- Форма для повторной отправки письма подтверждения -->
+        <c:if test="${showResendButton}">
+            <form action="/resend-confirmation-email" method="POST" class="verification-container">
 
-                <div>
-                    <p>Email: ${userEmail}</p>
-                </div>
+                <!-- Сообщение о статусе отправки токена -->
+                <p style="color: ${resendTokenStatusMsgColor};">
+                    ${resendTokenStatusMsg}
+                </p>
 
-                <form action="/resend-confirmation-email" method="POST">
+                <!-- Кнопка отправки -->
+                <button type="submit">Отправить письмо</button>
 
-                    <p style="color: ${verificationColor};">${isVerified}</p>
+                <!-- Токен -->
+                <p>${token}</p>
+            </form>
+        </c:if>
 
-                    <c:if test="${showResendButton}">
-                        <div style="border: 2px solid red; padding: 10px; display: inline-block;">
-                            <p>Отправить письмо для подтверждения аккаунта на мою почту (один раз в 24 часа)</p>
-                            <p style="color: ${resendTokenStatusMsgColor};">${resendTokenStatusMsg}</p>
-                            <button type="submit">Отправить письмо</button>
-                            <p>${token}</p>
-                        </div>
-                    </c:if>
-                </form>
-
-        </form:form>
-        <h4><a href="/">На главную</a></h4>
-    </body>
-
+        <!-- Ссылка на главную страницу -->
+        <a href="/"> <button>На главную </button> </a>
+    </div>
+</body>
 </html>
