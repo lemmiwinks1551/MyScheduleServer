@@ -88,19 +88,22 @@ public class PasswordResetController {
         String verificationLink = webUrl + "/password-reset?token=" + passwordResetToken.getConfirmationToken();
 
         String htmlSubject = "Приложение Запись клиентов - сброс пароля";
-        String htmlContent = "Добро пожаловать, <b>" + user.getUsername() + "</b>!"
-                + "<br>Чтобы установить новый пароль от Вашей учетной записи, "
-                + "<a href='" + verificationLink + "'>перейдите по ссылке</a>."
-                + "<br>Ссылка действительна 1 час.<br><br>"
-                + "<br>Проигнорируйте это письмо если не запрашивали сброс пароля.<br><br>"
-                + "<hr style='border:none; border-top:1px solid #ccc;'/>"
-                + "<p style='font-size:14px; color:#333;'>"
-                + "С уважением,<br>"
-                + "<b>Команда приложения Запись клиентов</b><br>"
-                + "<span style='font-size:12px; color:#888;'>"
-                + "Пожалуйста, не отвечайте на это письмо.<br>"
-                + "Для связи с нами используйте контактные данные на нашем сайте."
-                + "</span></p>";
+
+        // Оформленный HTML-контент письма
+        String htmlContent = "<div style='background: linear-gradient(135deg, #6e8efb, #a777e3); padding: 40px 0;'>"
+                + "<div style='font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; background: #fff; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);'>"
+                + "<h2 style='color: #6e8efb; text-align: center;'>Сброс пароля</h2>"
+                + "<p>Здравствуйте, <b>" + user.getUsername() + "</b>!</p>"
+                + "<p>Вы запросили сброс пароля для Вашей учетной записи в приложении <b>Запись клиентов</b>. Чтобы установить новый пароль, "
+                + "<a href='" + verificationLink + "' style='color: #6e8efb; text-decoration: none;'>перейдите по ссылке</a>.</p>"
+                + "<p style='color: #f44336; font-weight: bold;'>Ссылка действительна в течение 1 часа.</p>"
+                + "<p>Если Вы не запрашивали сброс пароля, просто проигнорируйте это сообщение.</p>"
+                + "<hr style='border:none; border-top:1px solid #e0e0e0; margin: 20px 0;'/>"
+                + "<p style='font-size: 14px;'>С уважением,<br>"
+                + "<b>Команда приложения Запись клиентов</b></p>"
+                + "<p style='font-size: 12px; color: #888;'>Пожалуйста, не отвечайте на это письмо. Для связи с нами используйте контактные данные на нашем сайте.</p>"
+                + "</div>"
+                + "</div>";
 
         try {
             emailService.sendEmailWithHtml(user.getUserEmail(), htmlSubject, htmlContent);
@@ -108,6 +111,7 @@ public class PasswordResetController {
             throw new RuntimeException(e);
         }
     }
+
 
     @GetMapping("/password-reset")
     public String showPasswordResetForm(@RequestParam("token") String passwordResetToken, Model model) {
