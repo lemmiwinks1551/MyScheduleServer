@@ -48,7 +48,7 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
 
         String verificationLink = webUrl + "/confirm-account?token=" + confirmationToken.getConfirmationToken();
 
-        String htmlSubject = "Приложение Запись клиентов - завершение регистрации";
+        String htmlSubject = "Приложение Запись клиентов - Подтверждение учетной записи";
 
         String htmlContent = "<div style='background: linear-gradient(135deg, #6e8efb, #a777e3); padding: 40px 0;'>"
                 + "<div style='font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; background: #fff; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);'>"
