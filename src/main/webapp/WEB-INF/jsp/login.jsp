@@ -10,6 +10,7 @@
 
     <!-- Подключение Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="${contextPath}/resources/js/passwordToggle.js" defer></script>
 
     <style>
         body {
@@ -130,8 +131,12 @@
             </div>
 
             <!-- Поле для ввода пароля -->
-            <div class="form-group">
-                <input id="password" name="password" type="password" placeholder="Пароль" required>
+            <div class="form-group" style="position: relative;">
+                <!-- Поле для ввода пароля -->
+                <input id="password" name="password" type="password" placeholder="Пароль" >
+
+                <!-- Иконка-глаз для показа/скрытия пароля -->
+                <span id="togglePassword" style="position: absolute; right: -10px; top: 50%; transform: translateY(-50%); cursor: pointer;">👀️</span>
             </div>
 
             <!-- Кнопка для входа -->

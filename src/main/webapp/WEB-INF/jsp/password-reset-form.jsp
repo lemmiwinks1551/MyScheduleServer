@@ -9,6 +9,7 @@
 
     <!-- Подключение Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="${contextPath}/resources/js/passwordToggle.js" defer></script>
 
     <style>
         body {
@@ -41,7 +42,6 @@
         .form-group {
             margin-bottom: 15px;
             width: 95%;
-
         }
 
         label {
@@ -123,17 +123,16 @@
             <input type="hidden" name="token" value="${token}">
 
             <!-- Поле для нового пароля -->
-            <div class="form-group">
-                <label for="newPassword">Новый пароль:</label>
-                <input id="newPassword" name="newPassword" type="password" placeholder="Введите новый пароль" required>
-                <div class="error-message">${passwordError}</div>
+            <div class="form-group" style="position: relative;">
+                <input id="password" name="newPassword" type="password" placeholder="Введите новый пароль" required>
+
+                <!-- Иконка-глаз для показа/скрытия пароля -->
+                <span id="togglePassword" style="position: absolute; right: -10px; top: 50%; transform: translateY(-50%); cursor: pointer;">👀️</span>
             </div>
 
             <!-- Подтверждение нового пароля -->
             <div class="form-group">
-                <label for="newPasswordConfirm">Подтверждение пароля:</label>
                 <input id="newPasswordConfirm" name="newPasswordConfirm" type="password" placeholder="Введите новый пароль еще раз" required>
-                <div class="error-message">${passwordError}</div>
             </div>
 
             <!-- Сообщение об успехе -->

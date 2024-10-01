@@ -72,7 +72,7 @@ public class PasswordResetController {
         sendPasswordResetEmail(user);
 
         // Уведомление об успешной отправке письма
-        model.addAttribute("successMessage", "Успешно! Токен был отправлен на почту пользователя");
+        model.addAttribute("successMessage", "Успешно! Письмо было отправлено на почту пользователя");
 
         return "forgot-password";
     }
