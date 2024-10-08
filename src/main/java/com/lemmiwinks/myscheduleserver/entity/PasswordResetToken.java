@@ -1,9 +1,11 @@
 package com.lemmiwinks.myscheduleserver.entity;
 
+import lombok.Data;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
 
+@Data
 @Entity
 @Table(name = "passwordResetToken")
 public class PasswordResetToken {
@@ -22,49 +24,12 @@ public class PasswordResetToken {
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
 
-    // конструкторы
-
-    public PasswordResetToken() {}
+    public PasswordResetToken() {
+    }
 
     public PasswordResetToken(User user) {
         this.user = user;
         createdDate = new Date();
         passwordResetToken = UUID.randomUUID().toString();
-    }
-
-    // Getters
-
-    public Long getTokenId() {
-        return tokenId;
-    }
-
-    public String getConfirmationToken() {
-        return passwordResetToken;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public User getUserEntity() {
-        return user;
-    }
-
-    // Setters
-
-    public void setTokenId(Long tokenId) {
-        this.tokenId = tokenId;
-    }
-
-    public void setConfirmationToken(String confirmationToken) {
-        this.passwordResetToken = confirmationToken;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }

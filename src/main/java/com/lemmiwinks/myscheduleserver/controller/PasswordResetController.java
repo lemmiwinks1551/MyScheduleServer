@@ -85,7 +85,7 @@ public class PasswordResetController {
     public void sendPasswordResetEmail(User user) {
         PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByUserId(user.getId());
 
-        String verificationLink = webUrl + "/password-reset?token=" + passwordResetToken.getConfirmationToken();
+        String verificationLink = webUrl + "/password-reset?token=" + passwordResetToken.getPasswordResetToken();
 
         String htmlSubject = "Приложение Запись клиентов - сброс пароля";
 
@@ -111,7 +111,6 @@ public class PasswordResetController {
             throw new RuntimeException(e);
         }
     }
-
 
     @GetMapping("/password-reset")
     public String showPasswordResetForm(@RequestParam("token") String passwordResetToken, Model model) {
@@ -159,7 +158,7 @@ public class PasswordResetController {
         }
 
         // Обновление пароля пользователя
-        User user = resetToken.getUserEntity();
+        User user = resetToken.getUser();
         String encodedPassword = bCryptPasswordEncoder.encode(newPassword);
         user.setPassword(encodedPassword);
 

@@ -1,11 +1,14 @@
 package com.lemmiwinks.myscheduleserver.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
 
+@Data
 @Entity
-@Table(name="confirmationToken")
+@Table(name = "confirmationToken")
 public class ConfirmationToken {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,49 +25,12 @@ public class ConfirmationToken {
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
 
-    // конструкторы
-
-    public ConfirmationToken() {}
+    public ConfirmationToken() {
+    }
 
     public ConfirmationToken(User user) {
         this.user = user;
         createdDate = new Date();
         confirmationToken = UUID.randomUUID().toString();
-    }
-
-    // Getters
-
-    public Long getTokenId() {
-        return tokenId;
-    }
-
-    public String getConfirmationToken() {
-        return confirmationToken;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public User getUserEntity() {
-        return user;
-    }
-
-    // Setters
-
-    public void setTokenId(Long tokenId) {
-        this.tokenId = tokenId;
-    }
-
-    public void setConfirmationToken(String confirmationToken) {
-        this.confirmationToken = confirmationToken;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }

@@ -1,11 +1,13 @@
 package com.lemmiwinks.myscheduleserver.entity;
 
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
 
+@Data
 @Entity
 @Table(name = "users") // название таблицы, в которой будут храниться данные о пользователях
 public class User implements UserDetails { // Чтобы в дальнейшим использовать класс User в Spring Security, он должен реализовывать интерфейс UserDetails
@@ -28,52 +30,12 @@ public class User implements UserDetails { // Чтобы в дальнейшим
 
     private boolean isEnabled = true;
 
-    // Конструктор по умолчанию
-    public User() {
-    }
-
     public void setEmailVerified(Boolean emailVerified) {
         this.emailVerified = emailVerified;
     }
 
     public Boolean getEmailVerified() {
         return emailVerified;
-    }
-
-    // Конструктор с параметрами
-    public User(Long id, String username, String userEmail, Boolean emailVerified, String password, String passwordConfirm, boolean isEnabled) {
-        this.id = id;
-        this.username = username;
-        this.userEmail = userEmail;
-        this.emailVerified = emailVerified;
-        this.password = password;
-        this.passwordConfirm = passwordConfirm;
-        this.isEnabled = isEnabled;
-    }
-
-    // Геттеры и сеттеры для полей
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
     }
 
     @Override
@@ -84,18 +46,6 @@ public class User implements UserDetails { // Чтобы в дальнейшим
     @Override
     public String getPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
     }
 
     public void setEnabled(boolean inEnabled) {

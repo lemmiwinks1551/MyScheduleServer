@@ -125,7 +125,7 @@ public class RegistrationController {
             }
 
             // Получаем юзера по токену
-            Optional<User> userOptional = userRepository.findById(confirmationTokenEntity.getUserEntity().getId());
+            Optional<User> userOptional = userRepository.findById(confirmationTokenEntity.getUser().getId());
 
             // Проверяем, существует ли пользователь
             if (!userOptional.isPresent()) {
