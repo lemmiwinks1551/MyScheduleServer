@@ -1,4 +1,4 @@
-package com.lemmiwinks.myscheduleserver.controller.api;
+package com.lemmiwinks.myscheduleserver.controller.rest;
 
 import com.lemmiwinks.myscheduleserver.entity.DbVersionsEtag;
 import com.lemmiwinks.myscheduleserver.entity.FaqModel;
@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/faq")
-public class FaqController {
+@RequestMapping("/api/test")
+public class TestController {
 
     @Autowired
     private FaqRepository faqRepository;
