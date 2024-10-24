@@ -1,5 +1,6 @@
 package com.lemmiwinks.myscheduleserver.controller.rest;
 
+import com.lemmiwinks.myscheduleserver.controller.rest.dto.AuthenticationRequestDto;
 import com.lemmiwinks.myscheduleserver.entity.User;
 import com.lemmiwinks.myscheduleserver.repository.UserRepository;
 import com.lemmiwinks.myscheduleserver.security.JwtTokenProvider;
@@ -35,7 +36,7 @@ public class AuthenticationRestControllerV1 {
 
     // Этот метод принимает POST запрос на /login и аутентифицирует пользователя
     @PostMapping("/login")
-    public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequestDTO requestDTO) {
+    public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequestDto requestDTO) {
         try {
             // При передаче данных мы аутентифицируем пользователя на основании username и password
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(requestDTO.getUsername(), requestDTO.getPassword()));
