@@ -36,12 +36,12 @@ public class Registration {
         // Проверка существования пользователя
         if (userRepository.existsByUsername(registrationRequestDto.getUsername())) {
             response.put("status", "Пользователь с таким логином уже существует");
-            return ResponseEntity.badRequest().body(response); // 400 Bad Request
+            return ResponseEntity.ok(response);
         }
 
         if (userRepository.existsByUserEmail(registrationRequestDto.getEmail())) {
             response.put("status", "Пользователь с таким Email уже существует");
-            return ResponseEntity.badRequest().body(response); // 400 Bad Request
+            return ResponseEntity.ok(response);
         }
 
         try {
@@ -58,8 +58,7 @@ public class Registration {
             return ResponseEntity.ok(response); // 200 OK
         } catch (Exception e) {
             response.put("status", "Возникла непредвиденная ошибка");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response); // 500 Internal Server Error
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 }
-
