@@ -60,7 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/actuator/prometheus/").permitAll()
                 .antMatchers("/api/v1/auth/login").permitAll()
                 .antMatchers("/api/v1/registration").permitAll()
-
+                .antMatchers("/api/v1/auth/forgot_password").permitAll()
 
                 // Доступ разрешён для всех ресурсов, если они есть
                 .antMatchers("/resources/**").permitAll()
