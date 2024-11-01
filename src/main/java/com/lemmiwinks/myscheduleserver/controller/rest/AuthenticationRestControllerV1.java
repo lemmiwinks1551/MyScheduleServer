@@ -2,11 +2,14 @@ package com.lemmiwinks.myscheduleserver.controller.rest;
 
 import com.lemmiwinks.myscheduleserver.controller.rest.dto.AuthenticationRequestDto;
 import com.lemmiwinks.myscheduleserver.controller.rest.dto.RegistrationRequestDto;
+import com.lemmiwinks.myscheduleserver.entity.ConfirmationToken;
 import com.lemmiwinks.myscheduleserver.entity.PasswordResetToken;
 import com.lemmiwinks.myscheduleserver.entity.User;
+import com.lemmiwinks.myscheduleserver.repository.ConfirmationTokenRepository;
 import com.lemmiwinks.myscheduleserver.repository.PasswordResetTokenRepository;
 import com.lemmiwinks.myscheduleserver.repository.UserRepository;
 import com.lemmiwinks.myscheduleserver.security.JwtTokenProvider;
+import com.lemmiwinks.myscheduleserver.service.ConfirmationTokenService;
 import com.lemmiwinks.myscheduleserver.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +17,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,6 +46,10 @@ public class AuthenticationRestControllerV1 {
     private String webUrl;
     @Autowired
     private EmailService emailService; // Сервис для отправки email
+    @Autowired
+    ConfirmationTokenRepository confirmationTokenRepository;
+    @Autowired
+    ConfirmationTokenService confirmationTokenService;
 
     public AuthenticationRestControllerV1(AuthenticationManager authenticationManager, UserRepository userRepository, JwtTokenProvider jwtTokenProvider) {
         this.authenticationManager = authenticationManager;
@@ -117,6 +126,41 @@ public class AuthenticationRestControllerV1 {
         // Уведомление об успешной отправке письма
         response.put("status", "Успешно! Письмо для сброса пароля отправлено на почту пользователя");
         return ResponseEntity.ok(response);
+    }
+
+    // Метод для получения данных пользователя
+    @PostMapping("/get_user_data")
+    public ResponseEntity<?> getUserData(@RequestBody AuthenticationRequestDto authenticationRequestDto) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        }
+
+        User user = userRepository.findByUsername(authenticationRequestDto.getUsername());
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+        return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/resend_confirmation_email")
+    public ResponseEntity<Map<Object, Object>> resendConfirmationEmail(@RequestBody User user) {
+        Map<Object, Object> response = new HashMap<>();
+
+        ConfirmationToken confirmationToken = confirmationTokenRepository.findByUserId(user.getId());
+
+        if (confirmationToken != null) {
+            response.put("status", "С момента отправки предыдущего токена не прошло 24 часа.");
+            return ResponseEntity.ok(response);
+        } else {
+            // Создаем и отправляем новый токен
+            confirmationTokenService.saveToken(user);
+            confirmationTokenService.sendVerificationEmail(user);
+
+            response.put("status", "Новый токен отправлен на почту " + user.getUserEmail());
+            return ResponseEntity.ok(response);
+        }
     }
 
     public void generatePasswordResetToken(User user) {
