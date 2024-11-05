@@ -1,4 +1,4 @@
-package com.lemmiwinks.myscheduleserver.controller;
+package com.lemmiwinks.myscheduleserver.controller.web;
 
 import com.lemmiwinks.myscheduleserver.entity.PasswordResetToken;
 import com.lemmiwinks.myscheduleserver.entity.User;

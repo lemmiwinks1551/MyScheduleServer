@@ -1,4 +1,4 @@
-package com.lemmiwinks.myscheduleserver.controller;
+package com.lemmiwinks.myscheduleserver.controller.web;
 
 import com.lemmiwinks.myscheduleserver.entity.ConfirmationToken;
 import com.lemmiwinks.myscheduleserver.entity.User;

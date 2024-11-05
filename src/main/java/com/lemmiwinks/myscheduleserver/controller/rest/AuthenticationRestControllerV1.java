@@ -22,10 +22,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -95,7 +92,7 @@ public class AuthenticationRestControllerV1 {
     }
 
     // Метод для сброса пароля
-    @PostMapping("/forgot_password")
+    @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@RequestBody RegistrationRequestDto registrationRequestDto) {
         Map<Object, Object> response = new HashMap<>();
 
@@ -129,7 +126,7 @@ public class AuthenticationRestControllerV1 {
     }
 
     // Метод для получения данных пользователя
-    @PostMapping("/get_user_data")
+    @PostMapping("/get-user-data")
     public ResponseEntity<?> getUserData(@RequestBody AuthenticationRequestDto authenticationRequestDto) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -144,7 +141,7 @@ public class AuthenticationRestControllerV1 {
         return ResponseEntity.ok(user);
     }
 
-    @PostMapping("/resend_confirmation_email")
+    @PostMapping("/resend-confirmation-email")
     public ResponseEntity<Map<Object, Object>> resendConfirmationEmail(@RequestBody User user) {
         Map<Object, Object> response = new HashMap<>();
 
@@ -158,7 +155,7 @@ public class AuthenticationRestControllerV1 {
             confirmationTokenService.saveToken(user);
             confirmationTokenService.sendVerificationEmail(user);
 
-            response.put("status", "Новый токен отправлен на почту " + user.getUserEmail());
+            response.put("status", "Письмо для подтверждения аккаунта отправлено на почту: " + user.getUserEmail());
             return ResponseEntity.ok(response);
         }
     }
