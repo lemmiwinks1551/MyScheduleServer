@@ -1,0 +1,21 @@
+package com.lemmiwinks.myscheduleserver.repository;
+
+import com.lemmiwinks.myscheduleserver.entity.Appointment;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.Date;
+import java.util.List;
+
+public interface AppointmentRepository extends JpaRepository<Appointment, String> {
+
+    List<Appointment> findByUserName(String userName);
+
+    Appointment findBySyncUUID(String syncUUID);
+
+    @Query("SELECT MAX(a.syncTimestamp) FROM Appointment a WHERE a.userName = :username")
+    Date findLastRemoteAppointmentTimestampByUsername(@Param("username") String username);
+
+
+}
