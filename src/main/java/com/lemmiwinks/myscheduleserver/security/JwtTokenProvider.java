@@ -1,5 +1,6 @@
 package com.lemmiwinks.myscheduleserver.security;
 
+import com.lemmiwinks.myscheduleserver.entity.User;
 import com.lemmiwinks.myscheduleserver.service.UserService;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -71,14 +72,17 @@ public class JwtTokenProvider {
         }
     }
 
-    // Метод для получения аутентификации из токена
     public Authentication getAuthentication(String token) {
         // Загружаем детали пользователя по имени пользователя, извлеченному из токена
         UserDetails userDetails = this.userService.loadUserByUsername(getUsername(token));
 
+        // Получаем сам объект User (если ваш UserDetails - это объект User)
+        User user = (User) userDetails;
+
         // Возвращаем объект аутентификации, который включает в себя пользовательские данные и права доступа
-        return new UsernamePasswordAuthenticationToken(userService, "", userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(user, "", userDetails.getAuthorities());
     }
+
 
     // Метод для получения username из JWT
     public String getUsername(String token) {

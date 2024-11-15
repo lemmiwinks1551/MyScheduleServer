@@ -17,5 +17,9 @@ public interface AppointmentRepository extends JpaRepository<Appointment, String
     @Query("SELECT MAX(a.syncTimestamp) FROM Appointment a WHERE a.userName = :username")
     Date findLastRemoteAppointmentTimestampByUsername(@Param("username") String username);
 
-
+    @Query("SELECT a FROM Appointment a WHERE a.syncTimestamp > :syncTimestamp AND a.userName = :userName")
+    List<Appointment> findAppointmentAfterTimestamp(
+            @Param("userName") String userName,
+            @Param("syncTimestamp") Date timestamp
+    );
 }

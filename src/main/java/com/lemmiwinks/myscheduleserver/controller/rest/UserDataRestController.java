@@ -1,15 +1,11 @@
 package com.lemmiwinks.myscheduleserver.controller.rest;
 
-import com.lemmiwinks.myscheduleserver.controller.rest.dto.AuthenticationRequestDto;
 import com.lemmiwinks.myscheduleserver.entity.Appointment;
 import com.lemmiwinks.myscheduleserver.entity.User;
 import com.lemmiwinks.myscheduleserver.repository.AppointmentRepository;
 import com.lemmiwinks.myscheduleserver.repository.ClientRepository;
 import com.lemmiwinks.myscheduleserver.repository.ProcedureRepository;
 import com.lemmiwinks.myscheduleserver.repository.UserRepository;
-import com.lemmiwinks.myscheduleserver.service.AuthService;
-import lombok.Data;
-import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,28 +36,30 @@ public class UserDataRestController {
     @Autowired
     private ProcedureRepository procedureRepository;
 
-    @Autowired
-    private AuthService authService;
-
-    @PostMapping("/check-auth")
-    public ResponseEntity<?> checkAuth(@RequestBody AuthenticationRequestDto authenticationRequestDto) {
-        return authService.checkAuth(authenticationRequestDto);
-    }
-
     @PostMapping("/post-appointment")
-    public ResponseEntity<?> postAppointment(@RequestBody Appointment appointment) {
+    public ResponseEntity<Map<String, String>> postAppointment(@RequestBody Appointment appointment) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("status", "unauthorized"));
+        }
+
         try {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            if (auth == null || !auth.isAuthenticated()) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+            Appointment existingAppointment = appointmentRepository.findBySyncUUID(appointment.getSyncUUID());
+
+            if (existingAppointment == null) {
+                appointmentRepository.save(appointment);
+                return ResponseEntity.ok(Map.of("status", "created"));
             }
 
-            appointmentRepository.save(appointment);
-            Map<String, String> response = Map.of("status", "success");
-            return ResponseEntity.ok(response);
+            if (existingAppointment.getSyncTimestamp().before(appointment.getSyncTimestamp())) {
+                appointmentRepository.save(appointment);
+                return ResponseEntity.ok(Map.of("status", "updated"));
+            } else {
+                return ResponseEntity.ok(Map.of("status", "outdated"));
+            }
         } catch (Exception e) {
-            Map<String, String> response = Map.of("status", "error", "message", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("status", "error", "message", e.getMessage()));
         }
     }
 
@@ -94,15 +92,40 @@ public class UserDataRestController {
 
     @PostMapping("/get-last-remote-appointment-timestamp")
     public Date getLastRemoteAppointmentTimestamp(@RequestBody User user) {
+        // Возвращает дату последнего изменения в таблице пользователя
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             if (auth == null || !auth.isAuthenticated()) {
                 return null;
             }
 
-            Date lastRemoteAppointmentTimestamp = appointmentRepository.findLastRemoteAppointmentTimestampByUsername(user.getUsername());
+            return appointmentRepository.findLastRemoteAppointmentTimestampByUsername(user.getUsername());
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
-            return lastRemoteAppointmentTimestamp;
+    @PostMapping("/get-remote-appointment-after-timestamp")
+    public List<Appointment> getUserAppointmentsAfterTimestamp(@RequestBody Date timestamp) {
+        // Возвращает список записей пользователя позднее указанной временной метки
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth == null || !auth.isAuthenticated()) {
+                return null;
+            }
+
+            // Получаем имя пользователя
+            String userName = auth.getName();
+
+            if (timestamp == null) {
+                // Если временная отметка == null, у пользователя нет последней даты изменения,
+                // возвращать будем все записи с самого начала
+                timestamp = new Date(0);
+            }
+
+            List<Appointment> appointments = appointmentRepository.findAppointmentAfterTimestamp(userName, timestamp);
+
+            return appointments;
         } catch (Exception e) {
             return null;
         }
