@@ -117,12 +117,6 @@ public class UserDataRestController {
             // Получаем имя пользователя
             String userName = auth.getName();
 
-            if (timestamp == null) {
-                // Если временная отметка == null, у пользователя нет последней даты изменения,
-                // возвращать будем все записи с самого начала
-                timestamp = new Date(0);
-            }
-
             List<Appointment> appointments = appointmentRepository.findAppointmentAfterTimestamp(userName, timestamp);
 
             return appointments;
