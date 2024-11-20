@@ -11,10 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -71,23 +68,16 @@ public class UserDataRestController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
             }
 
-            appointmentRepository.delete(appointment);
+            // Устанавливаем в запись статус DELETED
+            appointment.setSyncStatus("DELETED");
+            appointmentRepository.save(appointment);
+
             Map<String, String> response = Map.of("status", "success");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             Map<String, String> response = Map.of("status", "error", "message", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-    }
-
-    @PostMapping("/get-remote-appointments")
-    public List<Appointment> getUserRemoteAppointments(@RequestBody User user) {
-/*        try {
-            return appointmentRepository.findByUserName(user.getUsername());
-        } catch (Exception e) {
-            return null;
-        }*/
-        return null;
     }
 
     @PostMapping("/get-last-remote-appointment-timestamp")
@@ -122,6 +112,25 @@ public class UserDataRestController {
             return appointments;
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    @PostMapping("/get-count")
+    public Long getCount() {
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth == null || !auth.isAuthenticated()) {
+                return null;
+            }
+
+            // Получаем имя пользователя
+            String userName = auth.getName();
+
+            Long count = appointmentRepository.getCountByUser(userName);
+
+            return count;
+        } catch (Exception e) {
+            return 0L;
         }
     }
 }

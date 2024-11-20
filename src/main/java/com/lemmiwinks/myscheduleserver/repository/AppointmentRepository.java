@@ -22,4 +22,9 @@ public interface AppointmentRepository extends JpaRepository<Appointment, String
             @Param("userName") String userName,
             @Param("syncTimestamp") Date timestamp
     );
+
+    @Query("SELECT COUNT(a) FROM Appointment a WHERE a.userName = :userName")
+    Long getCountByUser(
+            @Param("userName") String userName
+    );
 }
