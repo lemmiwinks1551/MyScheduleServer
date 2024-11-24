@@ -43,6 +43,6 @@ public class Appointment {
     // Procedure-related fields
     private String procedureId;
     private String procedureName;
-    private BigDecimal procedurePrice;
+    private Integer procedurePrice;
     private String procedureNotes;
 }

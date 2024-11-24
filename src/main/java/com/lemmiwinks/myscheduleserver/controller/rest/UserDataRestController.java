@@ -70,6 +70,10 @@ public class UserDataRestController {
 
             // Устанавливаем в запись статус DELETED
             appointment.setSyncStatus("DELETED");
+
+            // Устанавливаем в запись время удаления, чтобы на других устройствах она обновилась и удалилась
+            appointment.setSyncTimestamp(new Date());
+
             appointmentRepository.save(appointment);
 
             Map<String, String> response = Map.of("status", "success");
