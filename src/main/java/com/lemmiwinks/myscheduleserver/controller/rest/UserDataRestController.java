@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v1/user-data")
@@ -44,11 +45,21 @@ public class UserDataRestController {
             Appointment existingAppointment = appointmentRepository.findBySyncUUID(appointment.getSyncUUID());
 
             if (existingAppointment == null) {
+                // Если запись не существует -> новую создать
                 appointmentRepository.save(appointment);
                 return ResponseEntity.ok(Map.of("status", "created"));
             }
 
+            if (Objects.equals(existingAppointment.getSyncStatus(), "DELETED")) {
+                // Если запись была удалена на сервере и уже стоит отметка об этом - отклоняем обновление
+                // и обновляем время синхронизации для удаления с устройств, где синхронизация не была произведена
+                existingAppointment.setSyncTimestamp(new Date());
+                appointmentRepository.save(existingAppointment);
+                return ResponseEntity.ok(Map.of("status", "rejected"));
+            }
+
             if (existingAppointment.getSyncTimestamp().before(appointment.getSyncTimestamp())) {
+                // Если запись уже существует -> обновить старую, если входящая временная метка позднее, чем актуальная
                 appointmentRepository.save(appointment);
                 return ResponseEntity.ok(Map.of("status", "updated"));
             } else {
