@@ -30,6 +30,8 @@ public class User implements UserDetails { // Чтобы в дальнейшим
 
     private boolean isEnabled = true;
 
+    private boolean syncEnabled = false;
+
     public void setEmailVerified(Boolean emailVerified) {
         this.emailVerified = emailVerified;
     }

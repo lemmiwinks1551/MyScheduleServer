@@ -148,4 +148,28 @@ public class UserDataRestController {
             return 0L;
         }
     }
+
+    @PostMapping("/enable-sync")
+    public Boolean enableSync(@RequestBody User user) {
+        try {
+            User userFromRepository = userRepository.findByUsername(user.getUsername());
+            userFromRepository.setSyncEnabled(true);
+            userRepository.save(userFromRepository);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @PostMapping("/disable-sync")
+    public Boolean disableSync(@RequestBody User user) {
+        try {
+            User userFromRepository = userRepository.findByUsername(user.getUsername());
+            userFromRepository.setSyncEnabled(false);
+            userRepository.save(userFromRepository);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
