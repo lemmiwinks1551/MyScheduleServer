@@ -3,7 +3,6 @@ package com.lemmiwinks.myscheduleserver.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
