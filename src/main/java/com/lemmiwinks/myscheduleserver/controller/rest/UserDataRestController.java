@@ -36,11 +36,6 @@ public class UserDataRestController {
 
     @PostMapping("/post-appointment")
     public ResponseEntity<Map<String, String>> postAppointment(@RequestBody Appointment appointment) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || !auth.isAuthenticated()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("status", "unauthorized"));
-        }
-
         try {
             Appointment existingAppointment = appointmentRepository.findBySyncUUID(appointment.getSyncUUID());
 
@@ -53,12 +48,12 @@ public class UserDataRestController {
             if (Objects.equals(existingAppointment.getSyncStatus(), "DELETED")) {
                 // Если запись была удалена на сервере и уже стоит отметка об этом - отклоняем обновление
                 // и обновляем время синхронизации для удаления с устройств, где синхронизация не была произведена
-                existingAppointment.setSyncTimestamp(new Date());
+                existingAppointment.setSyncTimestamp(new Date().getTime());
                 appointmentRepository.save(existingAppointment);
                 return ResponseEntity.ok(Map.of("status", "rejected"));
             }
 
-            if (existingAppointment.getSyncTimestamp().before(appointment.getSyncTimestamp())) {
+            if (existingAppointment.getSyncTimestamp() < appointment.getSyncTimestamp()) {
                 // Если запись уже существует -> обновить старую, если входящая временная метка позднее, чем актуальная
                 appointmentRepository.save(appointment);
                 return ResponseEntity.ok(Map.of("status", "updated"));
@@ -83,7 +78,7 @@ public class UserDataRestController {
             appointment.setSyncStatus("DELETED");
 
             // Устанавливаем в запись время удаления, чтобы на других устройствах она обновилась и удалилась
-            appointment.setSyncTimestamp(new Date());
+            appointment.setSyncTimestamp(new Date().getTime());
 
             appointmentRepository.save(appointment);
 
@@ -96,22 +91,22 @@ public class UserDataRestController {
     }
 
     @PostMapping("/get-last-remote-appointment-timestamp")
-    public Date getLastRemoteAppointmentTimestamp(@RequestBody User user) {
+    public Long getLastRemoteAppointmentTimestamp(@RequestBody User user) {
         // Возвращает дату последнего изменения в таблице пользователя
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             if (auth == null || !auth.isAuthenticated()) {
                 return null;
             }
-
-            return appointmentRepository.findLastRemoteAppointmentTimestampByUsername(user.getUsername());
+            Long lastTimestamp = appointmentRepository.findLastRemoteAppointmentTimestampByUsername(user.getUsername());
+            return lastTimestamp;
         } catch (Exception e) {
             return null;
         }
     }
 
     @PostMapping("/get-remote-appointment-after-timestamp")
-    public List<Appointment> getUserAppointmentsAfterTimestamp(@RequestBody Date timestamp) {
+    public List<Appointment> getUserAppointmentsAfterTimestamp(@RequestBody Long timestamp) {
         // Возвращает список записей пользователя позднее указанной временной метки
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();

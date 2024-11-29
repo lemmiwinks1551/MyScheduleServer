@@ -17,10 +17,7 @@ public class Appointment {
 
     private String userName;
 
-    //@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(columnDefinition = "DATETIME(3)")
-    private Date syncTimestamp;
+    private Long syncTimestamp;
 
     private String syncStatus;
 

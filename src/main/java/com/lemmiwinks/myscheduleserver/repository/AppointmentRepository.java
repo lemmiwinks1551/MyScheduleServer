@@ -15,12 +15,12 @@ public interface AppointmentRepository extends JpaRepository<Appointment, String
     Appointment findBySyncUUID(String syncUUID);
 
     @Query("SELECT MAX(a.syncTimestamp) FROM Appointment a WHERE a.userName = :username")
-    Date findLastRemoteAppointmentTimestampByUsername(@Param("username") String username);
+    Long findLastRemoteAppointmentTimestampByUsername(@Param("username") String username);
 
     @Query("SELECT a FROM Appointment a WHERE a.syncTimestamp > :syncTimestamp AND a.userName = :userName ORDER BY a.syncTimestamp ASC ")
     List<Appointment> findAppointmentAfterTimestamp(
             @Param("userName") String userName,
-            @Param("syncTimestamp") Date timestamp
+            @Param("syncTimestamp") Long timestamp
     );
 
     @Query("SELECT COUNT(a) FROM Appointment a WHERE a.userName = :userName")
