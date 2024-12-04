@@ -1,6 +1,6 @@
 package com.lemmiwinks.myscheduleserver.controller.rest;
 
-import com.lemmiwinks.myscheduleserver.controller.rest.dto.RegistrationRequestDto;
+import com.lemmiwinks.myscheduleserver.entity.dto.RegistrationRequestDto;
 import com.lemmiwinks.myscheduleserver.entity.User;
 import com.lemmiwinks.myscheduleserver.repository.ConfirmationTokenRepository;
 import com.lemmiwinks.myscheduleserver.repository.UserRepository;

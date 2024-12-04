@@ -1,6 +1,6 @@
 package com.lemmiwinks.myscheduleserver.service;
 
-import com.lemmiwinks.myscheduleserver.controller.rest.dto.AuthenticationRequestDto;
+import com.lemmiwinks.myscheduleserver.entity.dto.AuthenticationRequestDto;
 import com.lemmiwinks.myscheduleserver.entity.User;
 import com.lemmiwinks.myscheduleserver.repository.UserRepository;
 import org.springframework.http.HttpStatus;

@@ -1,9 +1,10 @@
 package com.lemmiwinks.myscheduleserver.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import javax.persistence.*;
-import java.util.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Data
 @Entity

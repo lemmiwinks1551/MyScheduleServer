@@ -1,4 +1,4 @@
-package com.lemmiwinks.myscheduleserver.controller.rest.dto;
+package com.lemmiwinks.myscheduleserver.entity.dto;
 
 import lombok.Data;
 
