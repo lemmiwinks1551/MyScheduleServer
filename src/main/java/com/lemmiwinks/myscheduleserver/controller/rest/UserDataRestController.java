@@ -72,15 +72,11 @@ public class UserDataRestController {
     @PostMapping("/delete-appointment")
     public ResponseEntity<?> deleteAppointment(@RequestBody Appointment appointment) {
         try {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            if (auth == null || !auth.isAuthenticated()) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
-            }
-
             // Устанавливаем в запись статус DELETED
             appointment.setSyncStatus("DELETED");
 
             // Устанавливаем в запись время удаления, чтобы на других устройствах она обновилась и удалилась
+            // Логика такая нужна, чтобы если удаление было раньше изменения записи - удаление было отправлено на остальные устройства
             appointment.setSyncTimestamp(new Date().getTime());
 
             appointmentRepository.save(appointment);

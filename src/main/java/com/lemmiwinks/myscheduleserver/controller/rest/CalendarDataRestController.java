@@ -68,6 +68,7 @@ public class CalendarDataRestController {
             calendarDate.setSyncStatus("DELETED");
 
             // Устанавливаем в запись время удаления, чтобы на других устройствах она обновилась и удалилась
+            // Логика такая нужна, чтобы если удаление было раньше изменения записи - удаление было отправлено на остальные устройства
             calendarDate.setSyncTimestamp(new Date().getTime());
 
             calendarDateRepository.save(calendarDate);

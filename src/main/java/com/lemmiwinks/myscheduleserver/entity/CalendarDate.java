@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Data
 @Entity
@@ -19,6 +20,7 @@ public class CalendarDate {
 
     private String syncStatus;
 
+    @Transient
     private Integer _id;
 
     private String date;
