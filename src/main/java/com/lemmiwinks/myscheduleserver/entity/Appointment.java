@@ -2,44 +2,42 @@ package com.lemmiwinks.myscheduleserver.entity;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
 @Table(name = "Appointments")
 public class Appointment {
 
+    // Sync fields
     @Id
     private String syncUUID;
-
-    private Long localAppointmentId;
-
     private String userName;
-
     private Long syncTimestamp;
-
     private String syncStatus;
 
-    private String appointmentDate;
-    private String appointmentTime;
-    private String appointmentNotes;
+    // Appointment fields
+    @Transient
+    private Long _id;
+    private String date;
+    private String time;
+    private String notes;
+    private Boolean deleted;
 
-    // Client-related fields
-    private String clientId;
-    private String clientName;
-    private String clientPhone;
-    private String clientTelegram;
-    private String clientInstagram;
-    private String clientVk;
-    private String clientWhatsapp;
+    // Client fields
+    private Long clientId = null;
+    private String name;
+    private String phone;
+    private String telegram;
+    private String instagram;
+    private String vk;
+    private String whatsapp;
     private String clientNotes;
-    private String clientPhoto;
+    private String photo;
 
-    // Procedure-related fields
-    private String procedureId;
-    private String procedureName;
-    private Integer procedurePrice;
+    // Procedure fields
+    @Column(name = "`procedure`")
+    private String procedure;
+    private String procedurePrice;
     private String procedureNotes;
 }

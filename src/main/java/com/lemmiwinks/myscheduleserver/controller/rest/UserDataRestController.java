@@ -39,6 +39,9 @@ public class UserDataRestController {
         try {
             Appointment existingAppointment = appointmentRepository.findBySyncUUID(appointment.getSyncUUID());
 
+            // Заглушка, пока не настроена синхронизация клиентов - обнуляем поле clientID
+            appointment.setClientId(null);
+
             if (existingAppointment == null) {
                 // Если запись не существует -> новую создать
                 appointmentRepository.save(appointment);
@@ -94,11 +97,11 @@ public class UserDataRestController {
     public Long getLastRemoteAppointmentTimestamp(@RequestBody User user) {
         // Возвращает дату последнего изменения в таблице пользователя
         try {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            if (auth == null || !auth.isAuthenticated()) {
-                return null;
-            }
             Long lastTimestamp = appointmentRepository.findLastRemoteAppointmentTimestampByUsername(user.getUsername());
+            if (lastTimestamp == null) {
+                // Если записей нет - возвращаем 0, чтобы спровоцировать полную синхронизацию от пользователя
+                lastTimestamp = 0L;
+            }
             return lastTimestamp;
         } catch (Exception e) {
             return null;

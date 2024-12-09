@@ -21,7 +21,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v1/calendar-color")
-public class CalendarColorRestController {
+public class CalendarDataRestController {
 
     @Autowired
     private UserRepository userRepository;
@@ -85,6 +85,10 @@ public class CalendarColorRestController {
         // Возвращает дату последнего изменения в таблице CalendarColor
         try {
             Long lastTimestamp = calendarDateRepository.findLastRemoteCalendarDateTimestampByUsername(user.getUsername());
+            if (lastTimestamp == null) {
+                // Если записей нет - возвращаем 0, чтобы спровоцировать полную синхронизацию от пользователя
+                lastTimestamp = 0L;
+            }
             return lastTimestamp;
         } catch (Exception e) {
             return null;
