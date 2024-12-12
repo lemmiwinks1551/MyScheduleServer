@@ -117,6 +117,8 @@
   <!-- Почтовый адрес в подвале страницы -->
   <footer class="footer">
     <h4>Почтовый адрес для связи с разработчиками: <a href="mailto:scheduleapp@mail.ru">scheduleapp@mail.ru</a></h4>
+    <h4><a href="/privacy-policy">Политика конфиденциальности</a></h4>
+    <h4><a href="/disclaimer">Дисклеймер</a></h4>
   </footer>
 </body>
 </html>
