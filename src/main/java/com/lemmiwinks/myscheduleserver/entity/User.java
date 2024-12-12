@@ -32,6 +32,8 @@ public class User implements UserDetails { // Чтобы в дальнейшим
 
     private boolean syncEnabled = false;
 
+    private boolean betaTester = false;
+
     public void setEmailVerified(Boolean emailVerified) {
         this.emailVerified = emailVerified;
     }
