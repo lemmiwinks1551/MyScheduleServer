@@ -13,7 +13,7 @@
 
     <groupId>com.lemmiwinks</groupId>
     <artifactId>myscheduleserver</artifactId>
-    <version>v.11</version>
+    <version>v.12</version>
     <name>MyScheduleServer</name>
 
     <properties>
