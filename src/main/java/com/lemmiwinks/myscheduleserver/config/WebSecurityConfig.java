@@ -51,6 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // Доступ разрешён всем:
                 .antMatchers("/faq").permitAll()
                 .antMatchers("/api/calendar/get-year/2024").permitAll()
+                .antMatchers("/api/calendar/get-year/2025").permitAll()
                 .antMatchers("/api/user-events").permitAll()
                 .antMatchers("/confirm-account").permitAll()
                 .antMatchers("/forgot-password").permitAll()

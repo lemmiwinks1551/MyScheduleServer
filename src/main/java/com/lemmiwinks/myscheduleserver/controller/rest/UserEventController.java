@@ -18,7 +18,7 @@ public class UserEventController {
 
     @PostMapping // указывает, что метод будет обрабатывать POST-запросы.
     public ResponseEntity<UserEventModel> createUserEvent(@RequestBody UserEventModel userEventModel) { // используется для связывания тела запроса с объектом UserEventModel.
-        UserEventModel savedEvent = userEventRepository.save(userEventModel);
-        return new ResponseEntity<>(savedEvent, HttpStatus.CREATED);
+        // UserEventModel savedEvent = userEventRepository.save(userEventModel); отключено
+        return new ResponseEntity<>(userEventModel, HttpStatus.CREATED);
     }
 }
