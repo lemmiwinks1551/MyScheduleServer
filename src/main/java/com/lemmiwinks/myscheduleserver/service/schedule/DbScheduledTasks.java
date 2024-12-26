@@ -1,4 +1,4 @@
-package com.lemmiwinks.myscheduleserver.config;
+package com.lemmiwinks.myscheduleserver.service.schedule;
 
 import com.lemmiwinks.myscheduleserver.entity.ConfirmationToken;
 import com.lemmiwinks.myscheduleserver.entity.PasswordResetToken;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Configuration
 @EnableScheduling
-public class ScheduledTasks {
+public class DbScheduledTasks {
 
     // Расписание удаляет expired токены
     // чтобы пользователи смогли запрашивать удаление пароля и подтверждение почты каждые час и 24 часа соответственно
