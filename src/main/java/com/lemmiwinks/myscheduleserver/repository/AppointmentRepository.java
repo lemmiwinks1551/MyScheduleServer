@@ -26,4 +26,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, String
     Long getCountByUser(
             @Param("userName") String userName
     );
+
+    List<Appointment> findByUserNameAndDeletedFalseOrderByDateDesc(String userName);
 }
