@@ -27,5 +27,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, String
             @Param("userName") String userName
     );
 
-    List<Appointment> findByUserNameAndDeletedFalseOrderByDateDesc(String userName);
+    @Query("SELECT a FROM Appointment a WHERE a.userName = :userName AND a.deleted = false ORDER BY STR_TO_DATE(a.date, '%d.%m.%Y') DESC")
+    List<Appointment> findByUserNameAndDeletedFalseOrderByDateDesc(@Param("userName") String userName);
+
 }
