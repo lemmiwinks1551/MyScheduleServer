@@ -21,7 +21,7 @@ public class ScheduleController {
         String username = principal.getName(); // получаем имя пользователя
 
         // Получаем не удаленные записи пользователя
-        List<Appointment> appointments = appointmentRepository.findByUserNameAndDeletedFalseOrderByDateDesc(username);
+        List<Appointment> appointments = appointmentRepository.findByUserNameAndDeletedFalseOrderByDateTimeDesc(username);
 
         model.addAttribute("appointments", appointments); // Возвращаем на страницу
         return "schedule";
