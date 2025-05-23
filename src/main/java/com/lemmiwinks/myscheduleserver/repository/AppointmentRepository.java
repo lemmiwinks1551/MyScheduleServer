@@ -32,6 +32,4 @@ public interface AppointmentRepository extends JpaRepository<Appointment, String
             "ORDER BY STR_TO_DATE(a.date, '%d.%m.%Y') DESC, " +
             "STR_TO_DATE(a.time, '%H:%i') DESC")
     List<Appointment> findByUserNameAndDeletedFalseOrderByDateTimeDesc(@Param("userName") String userName);
-
-
 }
