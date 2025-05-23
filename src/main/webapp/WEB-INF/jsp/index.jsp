@@ -110,6 +110,7 @@
     <sec:authorize access="isAuthenticated()">
       <h3>Добро пожаловать, ${pageContext.request.userPrincipal.name}!</h3>
       <a href="/account" class="btn">Мой аккаунт</a>
+      <a href="/schedule" class="btn">Мои записи</a>
       <a href="/logout" class="btn">Выйти</a>
     </sec:authorize>
   </div>
