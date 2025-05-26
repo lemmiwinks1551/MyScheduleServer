@@ -23,6 +23,7 @@
             align-items: center;
             min-height: 100vh;
             background: linear-gradient(135deg, #6e8efb, #a777e3);
+            flex-direction: column; /* чтобы кнопка была под сообщением */
         }
 
         .message-container {
@@ -41,20 +42,23 @@
             margin-bottom: 20px;
         }
 
-        a {
+        .btn {
             display: inline-block;
-            margin-top: 10px;
             padding: 12px 24px;
+            margin-top: 20px;
             background-color: #ffeb3b;
             color: #333;
-            text-decoration: none;
+            border: none;
             border-radius: 8px;
             font-weight: 500;
             font-size: 1em;
+            cursor: pointer;
             transition: background-color 0.3s ease;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        a:hover {
+        .btn:hover {
             background-color: #ffd600;
         }
 
@@ -69,7 +73,7 @@
 <body>
     <div class="message-container">
         <h1>${message}</h1>
-
+        <button type="button" class="btn" onclick="window.location.href='/'">На главную</button>
     </div>
 </body>
 </html>
