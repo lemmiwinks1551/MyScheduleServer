@@ -28,8 +28,11 @@ public interface AppointmentRepository extends JpaRepository<Appointment, String
     );
 
     @Query("SELECT a FROM Appointment a " +
-            "WHERE a.userName = :userName AND a.deleted = false " +
+            "WHERE a.userName = :userName " +
+            "AND a.deleted = false " +
+            "AND a.syncStatus <> 'DELETED' " +
             "ORDER BY STR_TO_DATE(a.date, '%d.%m.%Y') DESC, " +
             "STR_TO_DATE(a.time, '%H:%i') DESC")
     List<Appointment> findByUserNameAndDeletedFalseOrderByDateTimeDesc(@Param("userName") String userName);
+
 }
