@@ -21,12 +21,12 @@ public class AddAppointmentController {
     @Autowired
     AppointmentRepository appointmentRepository;
 
-    @GetMapping("/add_appointment")
+    @GetMapping("/addAppointment")
     public String addAppointment() {
-        return "add_appointment";
+        return "addAppointment";
     }
 
-    @PostMapping("/create_appointment")
+    @PostMapping("/createAppointment")
     public String createAppointment(
             @RequestParam("day") String day,
             @RequestParam(value = "time", required = false) String time,
