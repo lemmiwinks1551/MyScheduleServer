@@ -111,7 +111,7 @@
       <h3>Добро пожаловать, ${pageContext.request.userPrincipal.name}!</h3>
       <a href="/account" class="btn">Мой аккаунт</a>
       <a href="/schedule" class="btn">Мои записи</a>
-      <a href="/add_appointment" class="btn">Создать запись</a>
+      <a href="/addAppointment" class="btn">Создать запись</a>
       <a href="/logout" class="btn">Выйти</a>
     </sec:authorize>
   </div>
