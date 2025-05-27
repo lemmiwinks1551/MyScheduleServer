@@ -77,6 +77,13 @@
                 <th>Процедура</th>
                 <th>Цена</th>
                 <th>Заметки</th>
+
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+                <th style="text-align: center;">
+                    <i class="bi bi-three-dots-vertical" style="font-size: 20px;"></i>
+                </th>
+
             </tr>
         </thead>
         <tbody>
@@ -89,9 +96,26 @@
                     <td>${appointment.procedure}</td>
                     <td>${appointment.procedurePrice}</td>
                     <td>${appointment.notes}</td>
+
+                    <td>
+                        <!-- Ссылка на редактирование -->
+                        <a href="editAppointment?syncUUID=${appointment.syncUUID}" style="margin-right: 8px;">
+                            <i class="bi bi-pencil-fill" style="font-size: 18px; color: #333;"></i>
+                        </a>
+
+                        <!-- Кнопка удаления -->
+                        <form action="deleteAppointment" method="post" style="display:inline;" onsubmit="return confirm('Удалить запись?');">
+                            <input type="hidden" name="syncUUID" value="${appointment.syncUUID}" />
+                            <button type="submit" style="background:none; border:none; cursor:pointer;">
+                                <i class="bi bi-trash-fill" style="font-size: 18px; color: #d00;"></i>
+                            </button>
+                        </form>
+                    </td>
+
                 </tr>
             </c:forEach>
         </tbody>
+
     </table>
 </div>
 </body>
