@@ -142,7 +142,7 @@
 <body>
 <div class="container">
     <h1>Добавить запись</h1>
-    <form action="create_appointment" method="post">
+    <form action="createAppointment" method="post">
         <!-- Общая инфо -->
         <div>
             <label for="day">День</label>
