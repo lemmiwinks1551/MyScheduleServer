@@ -7,7 +7,6 @@
     <meta charset="UTF-8">
     <title>Мои записи</title>
 
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
     <style>
@@ -56,6 +55,52 @@
             font-weight: 500;
         }
 
+        .action-menu {
+            position: relative;
+            display: inline-block;
+        }
+
+        .action-button {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            z-index: 1;
+            background-color: white;
+            min-width: 100px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .dropdown-content a,
+        .dropdown-content form {
+            display: block;
+            padding: 8px 12px;
+            text-decoration: none;
+            color: #333;
+            background: white;
+            border: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .dropdown-content a:hover,
+        .dropdown-content form:hover {
+            background-color: #f0f0f0;
+        }
+
+        .show {
+            display: block;
+        }
+
         @media (max-width: 768px) {
             th, td {
                 font-size: 0.9em;
@@ -63,59 +108,71 @@
             }
         }
     </style>
+
+<script>
+    function toggleDropdown(id) {
+        const dropdown = document.getElementById(id);
+        document.querySelectorAll(".dropdown-content").forEach(dd => {
+            if (dd.id !== id) {
+                dd.classList.remove("show");
+            }
+        });
+        dropdown.classList.toggle("show");
+    }
+
+    window.addEventListener("click", function(e) {
+        if (!e.target.closest(".action-menu")) {
+            document.querySelectorAll(".dropdown-content").forEach(dd => dd.classList.remove("show"));
+        }
+    });
+</script>
+
 </head>
 <body>
 <div class="container">
     <h1>Мои записи</h1>
     <table>
         <thead>
-            <tr>
-                <th>Дата</th>
-                <th>Время</th>
-                <th>Клиент</th>
-                <th>Телефон</th>
-                <th>Процедура</th>
-                <th>Цена</th>
-                <th>Заметки</th>
-
-                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-
-                <th style="text-align: center;">
-                    <i class="bi bi-three-dots-vertical" style="font-size: 20px;"></i>
-                </th>
-
-            </tr>
+        <tr>
+            <th>Дата</th>
+            <th>Время</th>
+            <th>Клиент</th>
+            <th>Телефон</th>
+            <th>Процедура</th>
+            <th>Цена</th>
+            <th>Заметки</th>
+            <th style="text-align: center;">Действие</th>
+        </tr>
         </thead>
         <tbody>
-            <c:forEach var="appointment" items="${appointments}">
-                <tr>
-                    <td>${appointment.date}</td>
-                    <td>${appointment.time}</td>
-                    <td>${appointment.name}</td>
-                    <td>${appointment.phone}</td>
-                    <td>${appointment.procedure}</td>
-                    <td>${appointment.procedurePrice}</td>
-                    <td>${appointment.notes}</td>
-
-                    <td>
-                        <!-- Ссылка на редактирование -->
-                        <a href="editAppointment?syncUUID=${appointment.syncUUID}" style="margin-right: 8px;">
-                            <i class="bi bi-pencil-fill" style="font-size: 18px; color: #333;"></i>
-                        </a>
-
-                        <!-- Кнопка удаления -->
-                        <form action="deleteAppointment" method="post" style="display:inline;" onsubmit="return confirm('Удалить запись?');">
+        <c:forEach var="appointment" items="${appointments}">
+            <tr>
+                <td>${appointment.date}</td>
+                <td>${appointment.time}</td>
+                <td>${appointment.name}</td>
+                <td>${appointment.phone}</td>
+                <td>${appointment.procedure}</td>
+                <td>${appointment.procedurePrice}</td>
+                <td>${appointment.notes}</td>
+                <td style="text-align: center;">
+                    <div class="action-menu">
+                        <button class="action-button" onclick="toggleDropdown('dropdown-${appointment.syncUUID}')">
+                            ⋮
+                        </button>
+                        <div id="dropdown-${appointment.syncUUID}" class="dropdown-content">
+                        <a href="editAppointment?syncUUID=${appointment.syncUUID}">Редактировать</a>
+                        <form action="deleteAppointment" method="post" onsubmit="return confirm('Удалить запись?');" style="margin: 0; padding: 0;">
                             <input type="hidden" name="syncUUID" value="${appointment.syncUUID}" />
-                            <button type="submit" style="background:none; border:none; cursor:pointer;">
-                                <i class="bi bi-trash-fill" style="font-size: 18px; color: #d00;"></i>
+                            <button type="submit" style="all: unset; cursor: pointer; display: block; width: 100%; padding: 8px 12px; color: #333; text-align: left;">
+                                Удалить
                             </button>
                         </form>
-                    </td>
-
-                </tr>
-            </c:forEach>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </c:forEach>
         </tbody>
-
     </table>
 </div>
 </body>
