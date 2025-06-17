@@ -33,8 +33,13 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
                 // Настраиваем доступ:
                 .authorizeRequests()
 
-                // Разрешаем доступ к эндпоинту авторизации (выдача JWT-токена)
-                .antMatchers("/api/v1/auth/login").permitAll()
+                // Разрешаем доступ к:
+                .antMatchers(
+                        "/api/v1/auth/login", // логину
+                        "/api/v1/auth/forgot-password", // восстановлению пароля
+                        "/api/v1/auth/resend-confirmation-email", // отправке почты для подтверждения
+                        "/api/v1/registration" //регистрации
+                ).permitAll()
 
                 // Все остальные API-запросы требуют аутентификации
                 .anyRequest().authenticated()
