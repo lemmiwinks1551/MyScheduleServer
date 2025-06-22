@@ -1,8 +1,12 @@
 package com.lemmiwinks.myscheduleserver.controller.web;
 
 import com.lemmiwinks.myscheduleserver.entity.Appointment;
+import com.lemmiwinks.myscheduleserver.entity.PremiumUser;
+import com.lemmiwinks.myscheduleserver.entity.User;
 import com.lemmiwinks.myscheduleserver.repository.AppointmentRepository;
+import com.lemmiwinks.myscheduleserver.repository.PremiumUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +17,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 @Controller
@@ -21,10 +26,26 @@ public class AddAppointmentController {
     @Autowired
     AppointmentRepository appointmentRepository;
 
+    @Autowired
+    PremiumUserRepository premiumUserRepository;
+
     @GetMapping("/addAppointment")
-    public String addAppointment() {
+    public String addAppointment(
+            @AuthenticationPrincipal User user,
+            Model model) {
+
+        Optional<PremiumUser> premiumUser = premiumUserRepository.findByUser(user);
+
+        boolean isPremium = premiumUser.map(PremiumUser::getIsPremium).orElse(false);
+
+        if (!isPremium) {
+            model.addAttribute("message", "Только для премиум пользователей. Купите премиум в приложении 'Запись клиентов'");
+            return "message";
+        }
+
         return "addAppointment";
     }
+
 
     @PostMapping("/createAppointment")
     public String createAppointment(
