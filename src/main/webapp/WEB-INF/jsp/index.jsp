@@ -97,7 +97,7 @@
 <body>
   <div class="container">
     <!-- Добавляем изображение -->
-    <img src="/resources/static/ic_launcher.png" alt="Логотип">
+    <img src="/ic_launcher.png" alt="Логотип">
 
     <!-- Если пользователь не аутентифицирован, показываем ссылки для входа и регистрации -->
     <sec:authorize access="!isAuthenticated()">
